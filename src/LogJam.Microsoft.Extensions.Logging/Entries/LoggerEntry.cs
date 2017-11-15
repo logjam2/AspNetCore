@@ -13,25 +13,29 @@ namespace LogJam.Microsoft.Extensions.Logging.Entries
 
     using global::Microsoft.Extensions.Logging;
 
+    using LogJam.Microsoft.Extensions.Logging.Format;
+    using LogJam.Writer.Text;
+
 
     /// <summary>
     /// An entry that is logged when <see cref="ILogger.Log{TState}"/> is called.
     /// </summary>
-    public struct LoggerEntry<TState> : ILogEntry
+    [DefaultFormatter(typeof(DefaultLoggerEntryFormatter))]
+    public struct LoggerEntry : ILogEntry
     {
 
         public readonly string CategoryName;
-        public readonly DateTime Timestamp;
+        public readonly DateTime TimestampUtc;
         public readonly LogLevel LogLevel;
         public readonly EventId EventId;
-        public readonly TState State;
+        public readonly object State;
         public readonly Exception Exception;
-        public readonly Func<TState, Exception, string> DefaultFormatter;
+        public readonly Func<object, Exception, string> DefaultFormatter;
 
-        public LoggerEntry(string categoryName, LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public LoggerEntry(string categoryName, LogLevel logLevel, EventId eventId, object state, Exception exception, Func<object, Exception, string> formatter)
         {
             CategoryName = categoryName;
-            Timestamp = DateTime.UtcNow;
+            TimestampUtc = DateTime.UtcNow;
             LogLevel = logLevel;
             EventId = eventId;
             State = state;

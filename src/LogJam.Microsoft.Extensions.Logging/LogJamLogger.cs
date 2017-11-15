@@ -67,7 +67,7 @@ namespace LogJam.Microsoft.Extensions.Logging
 #region Implementation of ILogger
 
         /// <summary>
-        /// If this log entry isn't filtered, forwards a <see cref="LoggerEntry{TState}"/> to LogJam writers.
+        /// If this log entry isn't filtered, forwards a <see cref="LoggerEntry"/> to LogJam writers.
         /// </summary>
         /// <typeparam name="TState"></typeparam>
         /// <param name="logLevel"></param>
@@ -82,10 +82,10 @@ namespace LogJam.Microsoft.Extensions.Logging
                 return;
             }
 
-            IEntryWriter<LoggerEntry<TState>> entryWriter = _provider.GetEntryWriter<LoggerEntry<TState>>();
+            IEntryWriter<LoggerEntry> entryWriter = _provider.GetEntryWriter<LoggerEntry>();
             if (entryWriter.IsEnabled)
             {
-                var entry = new LoggerEntry<TState>(Name, logLevel, eventId, state, exception, formatter);
+                var entry = new LoggerEntry(Name, logLevel, eventId, state, exception, (obj, excp) => formatter((TState) obj, excp));
                 entryWriter.Write(ref entry);
             }
         }

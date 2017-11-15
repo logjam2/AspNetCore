@@ -39,7 +39,7 @@ namespace LogJam.Microsoft.Extensions.Logging
             if (entryWriter.IsEnabled)
             {
                 var entry = new LoggerBeginScopeEntry<TState>(_state);
-                _beginTimestamp = entry.Timestamp;
+                _beginTimestamp = entry.TimestampUtc;
                 entryWriter.Write(ref entry);
             }
         }
@@ -50,7 +50,7 @@ namespace LogJam.Microsoft.Extensions.Logging
             if (entryWriter.IsEnabled)
             {
                 var entry = new LoggerEndScopeEntry<TState>(_state);
-                _endTimestamp = entry.Timestamp;
+                _endTimestamp = entry.TimestampUtc;
                 entryWriter.Write(ref entry);
             }
         }

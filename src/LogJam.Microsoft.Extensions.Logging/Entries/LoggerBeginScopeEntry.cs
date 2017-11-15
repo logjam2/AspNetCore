@@ -18,12 +18,12 @@ namespace LogJam.Microsoft.Extensions.Logging.Entries
     public struct LoggerBeginScopeEntry<TState> : ILogEntry
     {
 
-        public readonly DateTime Timestamp;
+        public readonly DateTime TimestampUtc;
         public readonly TState State;
 
         public LoggerBeginScopeEntry(TState state)
         {
-            Timestamp = DateTime.UtcNow;
+            TimestampUtc = DateTime.UtcNow;
             State = state;
         }
 
