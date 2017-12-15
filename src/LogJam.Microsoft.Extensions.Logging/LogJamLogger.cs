@@ -1,4 +1,4 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
+// // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogJamLogger.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -82,8 +82,8 @@ namespace LogJam.Microsoft.Extensions.Logging
                 return;
             }
 
-            IEntryWriter<LoggerEntry> entryWriter = _provider.GetEntryWriter<LoggerEntry>();
-            if (entryWriter.IsEnabled)
+            if (_provider.TryGetEntryWriter(out IEntryWriter<LoggerEntry> entryWriter)
+                && entryWriter.IsEnabled)
             {
                 var entry = new LoggerEntry(Name, logLevel, eventId, state, exception, (obj, excp) => formatter((TState) obj, excp));
                 entryWriter.Write(ref entry);
@@ -115,7 +115,7 @@ namespace LogJam.Microsoft.Extensions.Logging
                 return null;
             }
 
-            var loggerScope = new LoggerScope<TState>(state, _provider);
+            var loggerScope = new LoggerScope<TState>(Name, state, _provider);
             loggerScope.WriteBeginScope();
             return loggerScope;
         }

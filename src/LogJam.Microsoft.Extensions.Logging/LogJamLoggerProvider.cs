@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogJamLoggerProvider.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -84,10 +84,10 @@ namespace LogJam.Microsoft.Extensions.Logging
         private IExternalScopeProvider _scopeProvider;
 #endif
 
-        public IEntryWriter<TEntry> GetEntryWriter<TEntry>()
+        internal bool TryGetEntryWriter<TEntry>(out IEntryWriter<TEntry> entryWriter)
             where TEntry : ILogEntry
         {
-            return _logManager.GetEntryWriter<TEntry>();
+            return _logManager.TryGetEntryWriter<TEntry>(out entryWriter);
         }
 
     }

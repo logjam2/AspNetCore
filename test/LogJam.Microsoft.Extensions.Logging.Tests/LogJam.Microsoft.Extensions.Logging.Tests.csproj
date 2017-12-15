@@ -8,9 +8,17 @@
     <RootNamespace>LogJam.Microsoft.Extensions.Logging</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="LogJam" Version="1.1.0-dev0073" />
-    <PackageReference Include="LogJam.XUnit2" Version="1.1.0-dev0073" />
+    <PackageReference Include="LogJam" Version="1.1.0-netcorejc001" />
+    <PackageReference Include="LogJam.XUnit2" Version="1.1.0-netcorejc001" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.3.1" />

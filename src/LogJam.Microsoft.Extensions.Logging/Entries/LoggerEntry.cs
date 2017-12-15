@@ -1,4 +1,4 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
+// // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerEntry.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -21,7 +21,7 @@ namespace LogJam.Microsoft.Extensions.Logging.Entries
     /// An entry that is logged when <see cref="ILogger.Log{TState}"/> is called.
     /// </summary>
     [DefaultFormatter(typeof(DefaultLoggerEntryFormatter))]
-    public struct LoggerEntry : ILogEntry
+    public readonly struct LoggerEntry : ILogEntry
     {
 
         public readonly string CategoryName;
