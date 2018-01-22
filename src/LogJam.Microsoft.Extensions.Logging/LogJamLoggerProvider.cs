@@ -35,6 +35,13 @@ namespace LogJam.Microsoft.Extensions.Logging
         private readonly ConcurrentDictionary<string, LogJamLogger> _loggers =
             new ConcurrentDictionary<string, LogJamLogger>(StringComparer.OrdinalIgnoreCase);
 
+        public LogJamLoggerProvider(ILogJamLoggingConfig loggingConfig = null)
+        {
+            _loggingConfig = loggingConfig ?? new LogJamLoggingConfig();
+            _logManager = new LogManager();
+            _disposeLogManager = true;
+        }
+
         public LogJamLoggerProvider(ILogJamLoggingConfig loggingConfig, LogManager logManager, bool disposeLogManager)
         {
             _loggingConfig = loggingConfig ?? new LogJamLoggingConfig();

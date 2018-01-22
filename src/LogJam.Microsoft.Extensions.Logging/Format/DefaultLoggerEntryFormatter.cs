@@ -1,4 +1,4 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultLoggerEntryFormatter.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -14,7 +14,6 @@ namespace LogJam.Microsoft.Extensions.Logging.Format
     using global::Microsoft.Extensions.Logging;
 
     using LogJam.Microsoft.Extensions.Logging.Entries;
-    using LogJam.Trace;
     using LogJam.Writer.Text;
 
     /// <summary>

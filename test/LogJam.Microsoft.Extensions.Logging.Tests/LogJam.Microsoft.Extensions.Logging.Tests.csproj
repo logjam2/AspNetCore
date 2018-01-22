@@ -2,17 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
-
     <IsPackable>false</IsPackable>
-
     <RootNamespace>LogJam.Microsoft.Extensions.Logging</RootNamespace>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DebugType>portable</DebugType>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 

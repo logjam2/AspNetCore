@@ -5,19 +5,12 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>logging; Microsoft.Extensions.Logging; LogJam</PackageTags>
     <MicrosoftExtensionsLoggingVersion>2.0.0</MicrosoftExtensionsLoggingVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <MicrosoftExtensionsLoggingVersion>1.1.0</MicrosoftExtensionsLoggingVersion>
     <DefineConstants>$(DefineConstants);MSLOGGING_11</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
