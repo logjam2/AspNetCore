@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 ***********************************************************************************************
 Directory.Build.props
 
@@ -12,16 +12,17 @@ MSBuild file that is automatically imported into projects in subdirectories.
   <!-- Shared project metadata (eg Nuget properties) -->
   <PropertyGroup>
     <Version Condition="'$(GitVersion_SemVer)' != ''">$(GitVersion_SemVer)</Version>
-    <AssemblyFileVersion Condition="'$(GitVersion_AssemblySemVer)' != ''">$(GitVersion_AssemblySemVer)</AssemblyFileVersion>
+    <AssemblyVersion Condition="'$(GitVersion_AssemblySemVer)' != ''">$(GitVersion_AssemblySemVer)</AssemblyVersion>
+    <AssemblyFileVersion Condition="'$(GitVersion_AssemblySemFileVer)' != ''">$(GitVersion_AssemblySemFileVer)</AssemblyFileVersion>
     <PackageVersion Condition="'$(GitVersion_NuGetVersion)' != ''">$(GitVersion_NuGetVersion)</PackageVersion>
 
     <Version Condition="'$(Version)' == ''">0.5.0-dev</Version>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">0.5.0.0</AssemblyVersion>
     <AssemblyFileVersion Condition="'$(AssemblyFileVersion)' == ''">0.5.0.0</AssemblyFileVersion>
     <PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
         
     <Authors>LogJam Contributors</Authors>
-    <Copyright>Copyright 2011-2017</Copyright>
+    <Copyright>Copyright 2011-2018</Copyright>
     <PackageLicenseUrl>https://raw.githubusercontent.com/logjam2/logjam/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/logjam2/logjam</PackageProjectUrl>
     <!--<PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>-->
@@ -29,6 +30,8 @@ MSBuild file that is automatically imported into projects in subdirectories.
 
     <!-- Use embeded PDBs in netstandard assemblies (when NOT using CodeContracts) - Portable PDBs crash ccrewrite. -->
     <DebugType>embedded</DebugType>
+
+    <LogJamDependencyVersion>1.1.0-cake-build0083</LogJamDependencyVersion>
   </PropertyGroup>
 
 </Project>

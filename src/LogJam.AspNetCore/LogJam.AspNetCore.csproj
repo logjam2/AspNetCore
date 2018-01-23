@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Description>LogJam integration with ASP.NET Core</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>logging; LogJam; ASP.NET Core</PackageTags>
+    <MicrosoftExtensionsLoggingVersion>2.0.0</MicrosoftExtensionsLoggingVersion>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="logjam" Version="$(LogJamDependencyVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsLoggingVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsLoggingVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LogJam.Microsoft.Extensions.Logging\LogJam.Microsoft.Extensions.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

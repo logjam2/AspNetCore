@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22598931-5EE9-43BE-A86C-FC65B7BEFB09}"
 EndProject
@@ -15,14 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4DA064CD-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogJam.Microsoft.Extensions.Logging", "src\LogJam.Microsoft.Extensions.Logging\LogJam.Microsoft.Extensions.Logging.csproj", "{6B6FD326-E09B-4A1B-88ED-89EAF4FCD281}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogJam.Microsoft.Extensions.Logging.Tests", "test\LogJam.Microsoft.Extensions.Logging.Tests\LogJam.Microsoft.Extensions.Logging.Tests.csproj", "{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogJam.Microsoft.Extensions.Logging.UnitTests", "test\LogJam.Microsoft.Extensions.Logging.UnitTests\LogJam.Microsoft.Extensions.Logging.UnitTests.csproj", "{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{E462842C-A5CF-4B6A-8076-27F351BACA3C}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
 		Directory.Build.props = Directory.Build.props
 		GitVersion.yml = GitVersion.yml
 		NuGet.config = NuGet.config
+		test.ps1 = test.ps1
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogJam.AspNetCore", "src\LogJam.AspNetCore\LogJam.AspNetCore.csproj", "{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +65,18 @@ Global
 		{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4}.Release|x64.Build.0 = Release|Any CPU
 		{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4}.Release|x86.ActiveCfg = Release|Any CPU
 		{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4}.Release|x86.Build.0 = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|x64.Build.0 = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Debug|x86.Build.0 = Debug|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|x64.ActiveCfg = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|x64.Build.0 = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|x86.ActiveCfg = Release|Any CPU
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +84,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6B6FD326-E09B-4A1B-88ED-89EAF4FCD281} = {22598931-5EE9-43BE-A86C-FC65B7BEFB09}
 		{AE367836-EE0F-4C8D-B2FA-0CA3FB368CC4} = {4DA064CD-CCCB-4638-98A8-E7FDE5B07927}
+		{145BA36A-A2CE-4655-BFD7-A3518ACFD73C} = {22598931-5EE9-43BE-A86C-FC65B7BEFB09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC64BBA5-6DB9-4263-AD50-66ED2FA18BD5}

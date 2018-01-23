@@ -5,10 +5,11 @@
 *.nupkg
 
 # Directories
-/_ReSharper.LogJam
+/_ReSharper.*
 /TestResults
 obj
 bin
 /packages
 .vs
 /NuGetOut/
+/tools/

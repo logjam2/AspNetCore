@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Assembly.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -9,4 +9,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("LogJam.Microsoft.Extensions.Logging.Tests")]
+[assembly:InternalsVisibleTo("LogJam.Microsoft.Extensions.Logging.UnitTests")]
