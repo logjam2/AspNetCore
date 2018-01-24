@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextLoggingTests.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -47,12 +47,11 @@ namespace LogJam.Microsoft.Extensions.Logging
             _logManager.Config.Writers.FormatAll(new GenericLoggerBeginScopeEntryFormatter());
             _logManager.Config.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
 
-            var config = new LogJamLoggingConfig()
-                         {
-                             IncludeScopes = true
-                         };
-            var provider = new LogJamLoggerProvider(config, _logManager, true);
-            _loggerFactory = new LoggerFactory(new ILoggerProvider[] { provider });
+            _loggerFactory = new LoggerFactory();
+            _loggerFactory.AddLogJam(new LogJamLoggerSettings()
+                                     {
+                                         IncludeScopes = true
+                                     }, _logManager, true);
         }
 
         public void Dispose()

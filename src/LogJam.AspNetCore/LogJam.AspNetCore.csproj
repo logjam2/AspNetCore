@@ -1,22 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
     <Description>LogJam integration with ASP.NET Core</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>logging; LogJam; ASP.NET Core</PackageTags>
-    <MicrosoftExtensionsLoggingVersion>2.0.0</MicrosoftExtensionsLoggingVersion>
     <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <DefineConstants>$(DefineConstants);WEBHOSTING_1x</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="logjam" Version="$(LogJamDependencyVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsLoggingVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsLoggingVersion)" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+  </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogJam.Microsoft.Extensions.Logging\LogJam.Microsoft.Extensions.Logging.csproj" />
+    <ProjectReference Include="..\LogJam.Microsoft.Extensions.Logging\LogJam.Extensions.Logging.csproj" />
   </ItemGroup>
 
 </Project>

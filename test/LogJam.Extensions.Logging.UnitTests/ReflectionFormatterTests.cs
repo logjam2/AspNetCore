@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReflectionFormatterTests.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -331,7 +331,7 @@ namespace LogJam.Microsoft.Extensions.Logging
         [Fact]
         public void PrimitiveArrayIsOnSingleLine()
         {
-            var intArray = Enumerable.Range(5, 5);
+            int[] intArray = Enumerable.Range(5, 5).ToArray();
 
             _reflectionFormatter.FormatObject(intArray, _formatWriter);
 

@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LogJamLoggingConfig.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LogJamLoggerSettings.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
 // Licensed under the <a href="https://github.com/logjam2/logjam/blob/master/LICENSE.txt">Apache License, Version 2.0</a>;
@@ -15,9 +15,9 @@ namespace LogJam.Microsoft.Extensions.Logging
 
 
     /// <summary>
-    /// Configuration settings for <see cref="LogJamLogger"/>s.
+    /// Coded configuration settings for <see cref="LogJamLogger"/>s.
     /// </summary>
-    public class LogJamLoggingConfig : ILogJamLoggingConfig
+    public class LogJamLoggerSettings : ILogJamLoggerSettings
     {
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace LogJam.Microsoft.Extensions.Logging
         public bool IncludeScopes { get; set; } = false;
 
         /// <summary>
-        /// Used to determine which <see cref="Logger"/> calls are logged. If the function returns
+        /// Used to determine which <see cref="ILogger"/> calls are logged. If the function returns
         /// <c>true</c>, log entries with the given category and <see cref="LogLevel"/> are logged.
         /// </summary>
         /// <remarks>TODO: Add support for one function per LogWriter.</remarks>

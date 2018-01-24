@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILogJamLoggingConfig.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ILogJamLoggerSettings.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
 // Licensed under the <a href="https://github.com/logjam2/logjam/blob/master/LICENSE.txt">Apache License, Version 2.0</a>;
@@ -15,9 +15,9 @@ namespace LogJam.Microsoft.Extensions.Logging
 
 
     /// <summary>
-    /// Configuration settings for <see cref="LogJamLogger"/>s.
+    /// Configuration settings for <see cref="LogJamLogger"/>s. May be implemented via configuration files or coded configuration.
     /// </summary>
-    public interface ILogJamLoggingConfig
+    public interface ILogJamLoggerSettings
     {
 
         /// <summary>

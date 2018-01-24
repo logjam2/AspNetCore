@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogJamLoggerProvider.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -22,12 +22,9 @@ namespace LogJam.Microsoft.Extensions.Logging
     /// </summary>
     //[ProviderAlias("LogJam")]
     public sealed class LogJamLoggerProvider : ILoggerProvider
-#if ! MSLOGGING_11
-        , ISupportExternalScope
-#endif
     {
 
-        private readonly ILogJamLoggingConfig _loggingConfig;
+        private readonly ILogJamLoggerSettings _loggerSettings;
         private readonly LogManager _logManager;
         private readonly bool _disposeLogManager;
 
@@ -35,16 +32,16 @@ namespace LogJam.Microsoft.Extensions.Logging
         private readonly ConcurrentDictionary<string, LogJamLogger> _loggers =
             new ConcurrentDictionary<string, LogJamLogger>(StringComparer.OrdinalIgnoreCase);
 
-        public LogJamLoggerProvider(ILogJamLoggingConfig loggingConfig = null)
+        public LogJamLoggerProvider(ILogJamLoggerSettings loggerSettings = null)
         {
-            _loggingConfig = loggingConfig ?? new LogJamLoggingConfig();
+            _loggerSettings = loggerSettings ?? new LogJamLoggerSettings();
             _logManager = new LogManager();
             _disposeLogManager = true;
         }
 
-        public LogJamLoggerProvider(ILogJamLoggingConfig loggingConfig, LogManager logManager, bool disposeLogManager)
+        public LogJamLoggerProvider(ILogJamLoggerSettings loggerSettings, LogManager logManager, bool disposeLogManager)
         {
-            _loggingConfig = loggingConfig ?? new LogJamLoggingConfig();
+            _loggerSettings = loggerSettings ?? new LogJamLoggerSettings();
             _logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
             _disposeLogManager = disposeLogManager;
         }
@@ -63,9 +60,9 @@ namespace LogJam.Microsoft.Extensions.Logging
         public LogManager LogManager => _logManager;
 
         /// <summary>
-        /// Returns the <see cref="ILogJamLoggingConfig"/> for this provider.
+        /// Returns the <see cref="ILogJamLoggerSettings"/> for this provider.
         /// </summary>
-        internal ILogJamLoggingConfig Config => _loggingConfig;
+        internal ILogJamLoggerSettings Settings => _loggerSettings;
 
         /// <summary>
         /// Returns a <see cref="ILogger"/> for <paramref name="categoryName"/>.
@@ -79,17 +76,8 @@ namespace LogJam.Microsoft.Extensions.Logging
 
         private LogJamLogger CreateLogJamLogger(string categoryName)
         {
-            return new LogJamLogger(categoryName, _loggingConfig.Filter, this);
+            return new LogJamLogger(categoryName, _loggerSettings.Filter, this);
         }
-
-#if !MSLOGGING_11
-        public void SetScopeProvider(IExternalScopeProvider scopeProvider)
-        {
-            _scopeProvider = scopeProvider;
-        }
-
-        private IExternalScopeProvider _scopeProvider;
-#endif
 
         internal bool TryGetEntryWriter<TEntry>(out IEntryWriter<TEntry> entryWriter)
             where TEntry : ILogEntry
