@@ -7,16 +7,16 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging
+namespace LogJam.Extensions.Logging
 {
     using System;
     using System.IO;
 
-    using global::Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging;
 
     using LogJam.Config;
-    using LogJam.Microsoft.Extensions.Logging.Entries;
-    using LogJam.Microsoft.Extensions.Logging.Format;
+    using LogJam.Extensions.Logging.Entries;
+    using LogJam.Extensions.Logging.Format;
     using LogJam.XUnit2;
 
     using Xunit;

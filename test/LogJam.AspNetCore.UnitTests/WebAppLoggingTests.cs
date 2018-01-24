@@ -24,7 +24,7 @@ namespace LogJam.AspNetCore
 
     using LogJam.AspNetCore.Controllers;
     using LogJam.Config;
-    using LogJam.Microsoft.Extensions.Logging;
+    using LogJam.Extensions.Logging;
     using LogJam.XUnit2;
 
 

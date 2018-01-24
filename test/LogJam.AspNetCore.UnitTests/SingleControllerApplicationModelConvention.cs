@@ -12,7 +12,7 @@ namespace LogJam.AspNetCore
     using System;
     using System.Reflection;
 
-    using global::Microsoft.AspNetCore.Mvc.ApplicationModels;
+    using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
     /// <summary>
     /// Uses a single controller type in a webapp (for testing), instead of using the normal process for controller discovery.

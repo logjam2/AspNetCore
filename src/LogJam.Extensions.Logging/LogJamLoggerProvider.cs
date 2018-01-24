@@ -7,12 +7,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging
+namespace LogJam.Extensions.Logging
 {
     using System;
     using System.Collections.Concurrent;
 
-    using global::Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging;
 
     using LogJam.Writer;
 

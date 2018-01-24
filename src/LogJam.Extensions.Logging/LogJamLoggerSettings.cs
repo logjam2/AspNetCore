@@ -7,11 +7,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging
+namespace LogJam.Extensions.Logging
 {
     using System;
 
-    using global::Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging;
 
 
     /// <summary>

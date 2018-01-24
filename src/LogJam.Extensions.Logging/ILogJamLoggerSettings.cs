@@ -6,13 +6,13 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 
-namespace LogJam.Microsoft.Extensions.Logging
+using Microsoft.Extensions.Logging;
+
+
+namespace LogJam.Extensions.Logging
 {
-    using System;
-
-    using global::Microsoft.Extensions.Logging;
-
 
     /// <summary>
     /// Configuration settings for <see cref="LogJamLogger"/>s. May be implemented via configuration files or coded configuration.

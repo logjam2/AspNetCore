@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultLoggerEntryFormatter.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -6,15 +6,16 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 
-namespace LogJam.Microsoft.Extensions.Logging.Format
+using Microsoft.Extensions.Logging;
+
+using LogJam.Extensions.Logging.Entries;
+using LogJam.Writer.Text;
+
+
+namespace LogJam.Extensions.Logging.Format
 {
-    using System;
-
-    using global::Microsoft.Extensions.Logging;
-
-    using LogJam.Microsoft.Extensions.Logging.Entries;
-    using LogJam.Writer.Text;
 
     /// <summary>
     /// Default formatter for writing <see cref="LoggerEntry"/> entries to text logs.

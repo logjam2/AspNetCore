@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;net46</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <RootNamespace>LogJam.Microsoft.Extensions.Logging</RootNamespace>
+    <RootNamespace>LogJam.Extensions.Logging</RootNamespace>
     <DebugType>portable</DebugType>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>

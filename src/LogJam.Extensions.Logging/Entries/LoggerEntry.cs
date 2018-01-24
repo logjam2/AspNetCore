@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerEntry.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -6,16 +6,16 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 
-namespace LogJam.Microsoft.Extensions.Logging.Entries
+using Microsoft.Extensions.Logging;
+
+using LogJam.Extensions.Logging.Format;
+using LogJam.Writer.Text;
+
+
+namespace LogJam.Extensions.Logging.Entries
 {
-    using System;
-
-    using global::Microsoft.Extensions.Logging;
-
-    using LogJam.Microsoft.Extensions.Logging.Format;
-    using LogJam.Writer.Text;
-
 
     /// <summary>
     /// An entry that is logged when <see cref="ILogger.Log{TState}"/> is called.

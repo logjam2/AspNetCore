@@ -9,4 +9,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("LogJam.Microsoft.Extensions.Logging.UnitTests")]
+[assembly:InternalsVisibleTo("LogJam.Extensions.Logging.UnitTests")]

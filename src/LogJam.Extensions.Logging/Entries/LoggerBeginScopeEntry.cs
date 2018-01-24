@@ -7,7 +7,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging.Entries
+namespace LogJam.Extensions.Logging.Entries
 {
 
     using System;

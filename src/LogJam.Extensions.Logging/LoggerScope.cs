@@ -7,11 +7,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging
+namespace LogJam.Extensions.Logging
 {
     using System;
 
-    using LogJam.Microsoft.Extensions.Logging.Entries;
+    using LogJam.Extensions.Logging.Entries;
     using LogJam.Writer;
 
 

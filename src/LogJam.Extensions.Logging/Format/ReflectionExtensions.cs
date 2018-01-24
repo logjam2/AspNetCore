@@ -7,7 +7,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace LogJam.Microsoft.Extensions.Logging.Format
+namespace LogJam.Extensions.Logging.Format
 {
     using System;
     using System.Collections.Generic;

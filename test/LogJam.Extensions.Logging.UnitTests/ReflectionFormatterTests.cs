@@ -6,21 +6,21 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace LogJam.Microsoft.Extensions.Logging
+using LogJam.Extensions.Logging.Format;
+using LogJam.Trace;
+using LogJam.Writer.Text;
+
+using Xunit;
+using Xunit.Abstractions;
+
+
+namespace LogJam.Extensions.Logging
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
-    using LogJam.Microsoft.Extensions.Logging.Format;
-    using LogJam.Trace;
-    using LogJam.Writer.Text;
-
-    using Xunit;
-    using Xunit.Abstractions;
-
 
     /// <summary>
     /// Validates <see cref="ReflectionFormatter"/> behavior.
@@ -28,7 +28,7 @@ namespace LogJam.Microsoft.Extensions.Logging
     public sealed class ReflectionFormatterTests : IDisposable
     {
 
-        private const string c_testClassFullName = "LogJam.Microsoft.Extensions.Logging.ReflectionFormatterTests";
+        private const string c_testClassFullName = "LogJam.Extensions.Logging.ReflectionFormatterTests";
 
         private readonly ITestOutputHelper _testOutput;
 

@@ -6,24 +6,24 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+
+using LogJam;
+using LogJam.Config;
+using LogJam.Extensions.Logging;
+using LogJam.Extensions.Logging.Entries;
+using LogJam.Extensions.Logging.Format;
+using LogJam.Trace;
+using LogJam.Trace.Config;
+using LogJam.Trace.Format;
+
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 {
-    using System;
-
-    using global::Microsoft.Extensions.DependencyInjection.Extensions;
-    using global::Microsoft.Extensions.Logging;
-
-    using LogJam;
-    using LogJam.Config;
-    using LogJam.Microsoft.Extensions.Logging;
-    using LogJam.Microsoft.Extensions.Logging.Entries;
-    using LogJam.Microsoft.Extensions.Logging.Format;
-    using LogJam.Trace;
-    using LogJam.Trace.Config;
-    using LogJam.Trace.Format;
-
 
     /// <summary>
     /// Extension methods to integrate LogJam into <c>Microsoft.Extensions.DependencyInjection</c>.

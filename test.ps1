@@ -13,7 +13,7 @@ function Exec([scriptblock]$cmd, [string]$errorMessage = "Error executing comman
   }
 }
 
-$testProjects =  ( "LogJam.Microsoft.Extensions.Logging.Tests" )
+$testProjects =  ( "LogJam.Extensions.Logging.Tests" )
 foreach ( $testProject in $testProjects) {
   Push-Location ".\test\$testProject"
   try {

@@ -11,10 +11,10 @@ namespace Microsoft.Extensions.Logging
 {
     using System;
 
-    using global::Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging;
 
     using LogJam;
-    using LogJam.Microsoft.Extensions.Logging;
+    using LogJam.Extensions.Logging;
 
 
     /// <summary>
