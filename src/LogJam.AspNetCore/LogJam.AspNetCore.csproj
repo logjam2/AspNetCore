@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogJam.Microsoft.Extensions.Logging\LogJam.Extensions.Logging.csproj" />
+    <ProjectReference Include="..\LogJam.Extensions.Logging\LogJam.Extensions.Logging.csproj" />
   </ItemGroup>
 
 </Project>

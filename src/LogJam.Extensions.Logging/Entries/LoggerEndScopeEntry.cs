@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerEndScopeEntry.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -17,6 +17,8 @@ namespace LogJam.Extensions.Logging.Entries
     /// </summary>
     public readonly struct LoggerEndScopeEntry<TState> : ILogEntry
     {
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
         public readonly string CategoryName;
         public readonly DateTime TimestampUtc;

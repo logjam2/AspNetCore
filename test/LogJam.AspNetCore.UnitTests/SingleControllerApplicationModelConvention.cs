@@ -17,6 +17,12 @@ namespace LogJam.AspNetCore
     /// <summary>
     /// Uses a single controller type in a webapp (for testing), instead of using the normal process for controller discovery.
     /// </summary>
+    /// <example>
+    /// <code>
+    /// hostBuilder.ConfigureServices(serviceCollection =>
+    ///         serviceCollection.AddMvcCore(options =>
+    ///                    options.Conventions.Add(new SingleControllerApplicationModelConvention(typeof(TestController)))));
+    /// </code></example>
     public class SingleControllerApplicationModelConvention : IApplicationModelConvention
     {
 
@@ -30,6 +36,7 @@ namespace LogJam.AspNetCore
         public void Apply(ApplicationModel application)
         {
             application.Controllers.Clear();
+            // TODO: Add Name to new ControllerModel
             application.Controllers.Add(new ControllerModel(_controllerType.GetTypeInfo(), _controllerType.GetCustomAttributes(true)));
         }
 

@@ -7,15 +7,16 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Concurrent;
+
+using Microsoft.Extensions.Logging;
+
+using LogJam.Writer;
+
+
 namespace LogJam.Extensions.Logging
 {
-    using System;
-    using System.Collections.Concurrent;
-
-    using Microsoft.Extensions.Logging;
-
-    using LogJam.Writer;
-
 
     /// <summary>
     /// <see cref="ILoggerProvider" /> for enabling LogJam for <c>Microsoft.Extensions.Logging</c> calls.
@@ -32,13 +33,12 @@ namespace LogJam.Extensions.Logging
         private readonly ConcurrentDictionary<string, LogJamLogger> _loggers =
             new ConcurrentDictionary<string, LogJamLogger>(StringComparer.OrdinalIgnoreCase);
 
-        public LogJamLoggerProvider(ILogJamLoggerSettings loggerSettings = null)
-        {
-            _loggerSettings = loggerSettings ?? new LogJamLoggerSettings();
-            _logManager = new LogManager();
-            _disposeLogManager = true;
-        }
-
+        /// <summary>
+        /// Initializes a new <see cref="LogJamLoggerProvider"/>, using the specified <paramref name="logManager"/>.
+        /// </summary>
+        /// <param name="loggerSettings"><see cref="ILogJamLoggerSettings"/> that specify what is logged.</param>
+        /// <param name="logManager">A <see cref="LogManager"/>, which manages which log writers are used.</param>
+        /// <param name="disposeLogManager">If <c>true</c>, <paramref name="logManager"/> is disposed when this <see cref="LogJamLoggerProvider"/> is <c>Dispose()</c>ed.</param>
         public LogJamLoggerProvider(ILogJamLoggerSettings loggerSettings, LogManager logManager, bool disposeLogManager)
         {
             _loggerSettings = loggerSettings ?? new LogJamLoggerSettings();
@@ -46,6 +46,9 @@ namespace LogJam.Extensions.Logging
             _disposeLogManager = disposeLogManager;
         }
 
+        /// <summary>
+        /// Disposes the <see cref="LogJamLoggerProvider"/>.
+        /// </summary>
         public void Dispose()
         {
             if (_disposeLogManager)

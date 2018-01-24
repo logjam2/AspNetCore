@@ -65,7 +65,7 @@ namespace LogJam.Extensions.Logging
                 if (entryWriter.IsEnabled)
                 {
                     var entry = new LoggerEndScopeEntry<TState>(_loggerName, _state);
-                    _beginTimestamp = entry.TimestampUtc;
+                    _endTimestamp = entry.TimestampUtc;
                     entryWriter.Write(ref entry);
                 }
             }
@@ -75,7 +75,7 @@ namespace LogJam.Extensions.Logging
                 if (entryWriter2.IsEnabled)
                 {
                     var entry = new LoggerEndScopeEntry<object>(_loggerName, _state);
-                    _beginTimestamp = entry.TimestampUtc;
+                    _endTimestamp = entry.TimestampUtc;
                     entryWriter2.Write(ref entry);
                 }
             }
@@ -84,7 +84,7 @@ namespace LogJam.Extensions.Logging
         public void Dispose()
         {
             // Using _endTimestamp as a bool _isDisposed field.
-            if (_endTimestamp == default(DateTime))
+            if (_endTimestamp == default)
             {
                 WriteEndScope();
             }

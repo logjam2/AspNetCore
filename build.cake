@@ -51,8 +51,11 @@ Task("Build")
     .IsDependentOn("Set-Version")
     .Does(() =>
 {
-  DotNetCoreBuild(solutionFile, settings =>
-    settings.SetConfiguration(configuration));
+  var settings = new DotNetCoreBuildSettings
+     {
+         Configuration = configuration
+     };
+  DotNetCoreBuild(solutionFile, settings);
 });
 
 Task("Run-Unit-Tests")

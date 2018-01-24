@@ -24,6 +24,8 @@ namespace LogJam.Extensions.Logging.Entries
     public readonly struct LoggerEntry : ILogEntry
     {
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
         public readonly string CategoryName;
         public readonly DateTime TimestampUtc;
         public readonly LogLevel LogLevel;

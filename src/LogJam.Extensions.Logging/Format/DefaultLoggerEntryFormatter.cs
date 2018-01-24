@@ -67,6 +67,7 @@ namespace LogJam.Extensions.Logging.Format
 
         #region Formatter methods
 
+        /// <inheritdoc />
         public override void Format(ref LoggerEntry entry, FormatWriter formatWriter)
         {
             ColorCategory color = ColorCategory.None;
@@ -110,6 +111,11 @@ namespace LogJam.Extensions.Logging.Format
 
         #endregion
 
+        /// <summary>
+        /// Determines a <see cref="ColorCategory"/> for a <see cref="LogLevel"/>.
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <returns></returns>
         protected ColorCategory LogLevelToColorCategory(LogLevel logLevel)
         {
             switch (logLevel)
@@ -131,6 +137,11 @@ namespace LogJam.Extensions.Logging.Format
             }
         }
 
+        /// <summary>
+        /// Returns a text label for a <see cref="LogLevel"/>.
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <returns></returns>
         protected string LogLevelToLabel(LogLevel logLevel)
         {
             switch (logLevel)

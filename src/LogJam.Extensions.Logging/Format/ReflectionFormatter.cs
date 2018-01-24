@@ -18,6 +18,7 @@ namespace LogJam.Extensions.Logging.Format
     using LogJam.Trace.Config;
     using LogJam.Writer.Text;
 
+#pragma warning disable IDE0008 // Use explicit type
 
     /// <summary>
     /// Provides shared formatting logic for logging an unknown entry type via reflection. This is not expected to be a good choice
@@ -301,7 +302,7 @@ namespace LogJam.Extensions.Logging.Format
         /// <param name="formatWriter"></param>
         /// <param name="recursionLevel"></param>
         /// <param name="lineage"></param>
-        /// <param name="parentPropertyType">The type of the property set to value <paramref name="o"/>. May be <c>null</c> if not applicable or unknown.</param>
+        /// <param name="parentPropertyType">The type of the property set to object <paramref name="untypedDictionary"/>. May be <c>null</c> if not applicable or unknown.</param>
         /// <returns>The max <paramref name="recursionLevel"/> reached when <paramref name="untypedDictionary"/> was formatted.</returns>
         // ReSharper disable once UnusedMember.Local
         private int FormatAsDictionary<TKey, TValue>(object untypedDictionary, FormatWriter formatWriter, int recursionLevel, Stack<object> lineage, Type parentPropertyType)

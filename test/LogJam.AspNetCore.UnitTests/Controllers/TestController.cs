@@ -6,6 +6,9 @@
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
+
+using System;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogJam.AspNetCore.Controllers
@@ -22,6 +25,12 @@ namespace LogJam.AspNetCore.Controllers
         public string[] GetValues()
         {
             return new[] { "foo", "bar" };
+        }
+
+        [HttpGet("exception")]
+        public string[] ThrowException()
+        {
+            throw new InvalidOperationException("Expected test exception");
         }
 
     }

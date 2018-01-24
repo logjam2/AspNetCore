@@ -10,6 +10,7 @@
 using System;
 
 using LogJam.Config;
+using LogJam.Extensions.Logging;
 
 using Microsoft.Extensions.DependencyInjection;
 

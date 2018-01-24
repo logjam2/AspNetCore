@@ -12,6 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C1622BDB-E
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4DA064CD-CCCB-4638-98A8-E7FDE5B07927}"
+	ProjectSection(SolutionItems) = preProject
+		test\xUnit.Common.props = test\xUnit.Common.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogJam.Extensions.Logging", "src\LogJam.Extensions.Logging\LogJam.Extensions.Logging.csproj", "{6B6FD326-E09B-4A1B-88ED-89EAF4FCD281}"
 EndProject

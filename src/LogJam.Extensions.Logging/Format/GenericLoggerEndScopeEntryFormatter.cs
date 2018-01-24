@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GenericLoggerBeginScopeEntryFormatter.cs">
 // Copyright (c) 2011-2017 https://github.com/logjam2.  
 // </copyright>
@@ -51,6 +51,7 @@ namespace LogJam.Extensions.Logging.Format
         /// </summary>
         public bool IncludeTimestamp { get; set; }
 
+        /// <inheritdoc />
         public override void Format(ref LoggerEndScopeEntry<object> entry, FormatWriter formatWriter)
         {
             formatWriter.BeginEntry();
