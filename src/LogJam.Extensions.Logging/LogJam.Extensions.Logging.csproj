@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
-    <Description>LogJam provider for Microsoft.Extensions.Logging</Description>
+    <Description>LogJam provider + integration for Microsoft.Extensions.Logging</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>logging; Microsoft.Extensions.Logging; LogJam</PackageTags>
     <LangVersion>7.2</LangVersion>
