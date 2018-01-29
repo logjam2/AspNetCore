@@ -150,7 +150,7 @@ namespace LogJam.Extensions.Logging
 
             _reflectionFormatter.FormatObject(root, _formatWriter);
 
-            Assert.Equal(
+            AssertEqualMultiline(
 @"{  Child:  {
       Child:  {
          Child:  {
@@ -374,6 +374,19 @@ namespace LogJam.Extensions.Logging
         {
             _reflectionFormatter.FormatObject(primitive, _formatWriter);
             Assert.Contains(expectedFormatOutput, _formatterOutput.ToString());
+        }
+
+        /// <summary>
+        /// Asserts that multiline string <paramref name="actual"/> equals <paramref name="expected"/>.
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <param name="actual"></param>
+        /// <remarks>
+        /// This handles the case where code newlines are different from CLR-generated newlines.
+        /// </remarks>
+        private void AssertEqualMultiline(string expected, string actual)
+        {
+            Assert.Equal(expected.Replace("\r\n", "\n"), actual.Replace("\r\n", "\n"));
         }
 
         private class A
