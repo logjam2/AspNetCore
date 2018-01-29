@@ -159,7 +159,6 @@ namespace LogJam.Extensions.Logging
 
             public ServiceConfigurationFixture()
             {
-                serviceCollection.AddLogging();
                 serviceCollection.AddLogJamLoggerProvider();
 #if ASPNETCORE2_0
                 serviceCollection.Configure<LoggerFilterOptions>(filterOptions =>
@@ -169,7 +168,12 @@ namespace LogJam.Extensions.Logging
                                                                                   .AddFilter<LogJamLoggerProvider>("Microsoft", LogLevel.None);
                                                                  });
 #else
-                                              serviceCollection.Configure<FilterLoggerSettings>(filterSettings => filterSettings.Add("Default", LogLevel.Trace));
+                serviceCollection.AddSingleton<IFilterLoggerSettings>(new FilterLoggerSettings
+                                                                      {
+                                                                          { "Default", LogLevel.Information },
+                                                                          { "System", LogLevel.Debug },
+                                                                          { "Microsoft", LogLevel.None } // REVIEW: Not filtered to just LogJamLoggerProvider; no way to do that here
+                                                                      });
 #endif
             }
 

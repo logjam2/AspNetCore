@@ -10,11 +10,8 @@
 using System;
 
 using LogJam.Config;
-using LogJam.Extensions.Logging;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
@@ -47,7 +44,6 @@ namespace Microsoft.AspNetCore.Hosting
             webHostBuilder.ConfigureServices((webhostBuilderContext, serviceCollection) =>
                                              {
                                                  serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => configureLogJam(logManagerConfig, webhostBuilderContext));
-                                                 serviceCollection.AddLogging();
                                                  serviceCollection.AddLogJamLoggerProvider();
                                              });
             return webHostBuilder;
@@ -69,7 +65,6 @@ namespace Microsoft.AspNetCore.Hosting
             webHostBuilder.ConfigureServices(serviceCollection =>
                                              {
                                                  serviceCollection.AddLogJam(configureLogJam);
-                                                 serviceCollection.AddLogging();
                                                  serviceCollection.AddLogJamLoggerProvider();
                                              });
             return webHostBuilder;

@@ -40,16 +40,5 @@ namespace Microsoft.Extensions.Logging
             return factory;
         }
 
-        ///// <summary>
-        ///// </summary>
-        ///// <param name="factory">The <see cref="ILoggerFactory" /> to use.</param>
-        ///// <param name="configuration">The <see cref="IConfiguration" /> to use for <see cref="IConsoleLoggerSettings" />.</param>
-        ///// <returns></returns>
-        //public static ILoggerFactory AddLogJam(this ILoggerFactory factory, IConfiguration configuration, LogManager logManager, bool disposeLogManager)
-        //{
-        //    var settings = new ConfigurationLogJamLoggerSettings(configuration);
-        //    return factory.AddConsole(settings);
-        //}
-
     }
 }

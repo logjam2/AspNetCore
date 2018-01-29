@@ -20,7 +20,6 @@ using LogJam.Trace;
 using LogJam.Trace.Config;
 using LogJam.Trace.Format;
 
-
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -150,7 +149,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return serviceCollection;
         }
 
-        /// <summary>Adds LogJam for calls to <c>Microsoft.Extensions.Logging</c> APIs. <c>IServiceCollection.AddLogging()</c> must also be called.</summary>
+        /// <summary>Adds LogJam for calls to <c>Microsoft.Extensions.Logging</c> APIs. <c>IServiceCollection.AddLogging()</c> does not need to called separately.</summary>
         /// <param name="serviceCollection">The <see cref="IServiceCollection"/> to configure.</param>
         /// <returns>The <paramref name="serviceCollection"/>.</returns>
         /// <remarks>
@@ -163,7 +162,18 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(serviceCollection));
             }
 
+            serviceCollection.AddLogging();
+
+#if ASPNETCORE2_0
+            // Just registering the ILoggerProvider works in ASP.NET Core 2.0
             serviceCollection.AddSingleton<ILoggerProvider, LogJamLoggerProvider>();
+#else
+            // For ASP.NET 1.1, things have to be manually wired.
+            // The app can register IFilterLoggerSettings to set the filter settings 
+            serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory>(serviceProvider => new LoggerFactory()
+                                                                                                     .WithFilter(serviceProvider.GetService<IFilterLoggerSettings>() ?? new FilterLoggerSettings())
+                                                                                                     .AddLogJam(serviceProvider.GetRequiredService<LogManager>(), false, LogJamLogger.LogEverything)));
+#endif
 
             // Setup default text formatters
             serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig) );
