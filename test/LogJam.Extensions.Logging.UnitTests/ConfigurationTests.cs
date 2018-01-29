@@ -188,6 +188,46 @@ namespace LogJam.Extensions.Logging
 
         }
 
+
+#if ASPNETCORE2_0
+
+        public class JsonConfigurationFixture : BaseConfigurationFixture
+        {
+
+            public JsonConfigurationFixture()
+            {
+                var json =
+@"{
+  ""Logging"": {
+    ""LogLevel"": {
+      ""Default"": ""Information"",
+      ""System"": ""Debug""
+    },
+    ""LogJam"": {
+      ""LogLevel"": {
+        ""Microsoft"": ""None""
+      }
+    }
+  }
+}";
+                var config = JsonTestConfiguration.Create(() => json);
+
+                serviceCollection.AddLogging(loggingBuilder => loggingBuilder.AddLogJam()
+                                                               .AddConfiguration(config.GetSection("Logging")));
+            }
+
+        }
+
+        public class JsonConfigurationTests : BaseConfigurationTests, IClassFixture<JsonConfigurationFixture>
+        {
+
+            public JsonConfigurationTests(JsonConfigurationFixture configurationFixture)
+                : base(configurationFixture)
+            {}
+
+        }
+#endif
+
     }
 
 }

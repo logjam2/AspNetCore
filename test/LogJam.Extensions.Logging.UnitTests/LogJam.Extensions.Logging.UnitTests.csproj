@@ -21,10 +21,10 @@
 
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="$(AspNetCoreVersion)" Condition=" '$(AspNetCoreVersion)' == '2.0.0' " />
+    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="$(AspNetCoreVersion)" Condition=" '$(AspNetCoreVersion)' == '1.1.0' " />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.0" Condition=" '$(AspNetCoreVersion)' == '1.1.0' " />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
