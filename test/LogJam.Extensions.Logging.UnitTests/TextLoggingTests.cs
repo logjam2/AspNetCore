@@ -48,10 +48,7 @@ namespace LogJam.Extensions.Logging
             _logManager.Config.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
 
             _loggerFactory = new LoggerFactory();
-            _loggerFactory.AddLogJam(new LogJamLoggerSettings()
-                                     {
-                                         IncludeScopes = true
-                                     }, _logManager, true);
+            _loggerFactory.AddLogJam(_logManager, true, LogJamLogger.LogInformation);
         }
 
         public void Dispose()
@@ -65,12 +62,12 @@ namespace LogJam.Extensions.Logging
             var logger = _loggerFactory.CreateLogger(GetType());
             logger.LogInformation("Information message.");
             logger.LogWarning("Formatted warning: {nbr} {date:d}", 3.14f, new DateTime(2000, 1, 1));
-            logger.LogDebug("Debug is off by default.");
+            logger.LogDebug("Debug is off.");
 
             var loggedText = _logOutput.ToString();
             Assert.Contains("Information message.", loggedText);
             Assert.Contains("Formatted warning: 3.14 01/01/2000", loggedText);
-            Assert.DoesNotContain("Debug is off by default.", loggedText);
+            Assert.DoesNotContain("Debug is off.", loggedText);
         }
 
         [Fact]

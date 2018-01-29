@@ -13,6 +13,8 @@ using LogJam.Config;
 using LogJam.Extensions.Logging;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Hosting
@@ -24,16 +26,18 @@ namespace Microsoft.AspNetCore.Hosting
     public static class LogJamWebHostBuilderExtensions
     {
 
-#if !WEBHOSTING_1x
-    /// <summary>Integrates LogJam into the web host.</summary>
-    /// <param name="webHostBuilder">The <see cref="IWebHostBuilder"/> to configure.</param>
-    /// <param name="configureLogJam">A configuration delegate, which must configure a <see cref="LogManagerConfig"/> instance.</param>
-    /// <returns>The <paramref name="webHostBuilder"/></returns>
-    /// <remarks>
-    /// This overload accepts a <paramref name="configureLogJam"/> delegate with a <see cref="WebHostBuilderContext"/> argument,
-    /// which can be used to access host environment settings. This overload requires ASP.NET Core 2.0 or newer.
-    /// </remarks>
-        public static IWebHostBuilder UseLogJam(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, LogManagerConfig> configureLogJam)
+#if ASPNETCORE2_0
+        // WebHostBuilderContext isn't defined before ASP.NET Core 2.0
+
+        /// <summary>Integrates LogJam into the web host.</summary>
+        /// <param name="webHostBuilder">The <see cref="IWebHostBuilder"/> to configure.</param>
+        /// <param name="configureLogJam">A configuration delegate, which may configure a <see cref="LogManagerConfig"/> instance.</param>
+        /// <returns>The <paramref name="webHostBuilder"/></returns>
+        /// <remarks>
+        /// This overload accepts a <paramref name="configureLogJam"/> delegate with a <see cref="WebHostBuilderContext"/> argument,
+        /// which can be used to access host environment settings. This overload requires ASP.NET Core 2.0 or newer.
+        /// </remarks>
+        public static IWebHostBuilder UseLogJam(this IWebHostBuilder webHostBuilder, Action<LogManagerConfig, WebHostBuilderContext> configureLogJam)
         {
             if (webHostBuilder == null)
             {
@@ -41,8 +45,11 @@ namespace Microsoft.AspNetCore.Hosting
             }
 
             webHostBuilder.ConfigureServices((webhostBuilderContext, serviceCollection) =>
-            {
-            });
+                                             {
+                                                 serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => configureLogJam(logManagerConfig, webhostBuilderContext));
+                                                 serviceCollection.AddLogging();
+                                                 serviceCollection.AddLogJamLoggerProvider();
+                                             });
             return webHostBuilder;
         }
 #endif
@@ -50,11 +57,9 @@ namespace Microsoft.AspNetCore.Hosting
         /// <summary>Integrates LogJam into the web host.</summary>
         /// <param name="webHostBuilder">The <see cref="IWebHostBuilder" /> to configure.</param>
         /// <param name="configureLogJam">A configuration delegate, which may configure the <see cref="LogManagerConfig" /> instance. May be <c>null</c>.</param>
-        /// <param name="createLogJamLoggerSettings"></param>
         /// <returns>The <paramref name="webHostBuilder" /></returns>
         public static IWebHostBuilder UseLogJam(this IWebHostBuilder webHostBuilder,
-                                                Action<LogManagerConfig, IServiceProvider> configureLogJam,
-                                                Func<ILogJamLoggerSettings> createLogJamLoggerSettings = null)
+                                                Action<LogManagerConfig, IServiceProvider> configureLogJam)
         {
             if (webHostBuilder == null)
             {
@@ -63,8 +68,9 @@ namespace Microsoft.AspNetCore.Hosting
 
             webHostBuilder.ConfigureServices(serviceCollection =>
                                              {
-                                                 serviceCollection.UseLogJam(configureLogJam);
-                                                 serviceCollection.UseLogJamLoggerFactory(createLogJamLoggerSettings);
+                                                 serviceCollection.AddLogJam(configureLogJam);
+                                                 serviceCollection.AddLogging();
+                                                 serviceCollection.AddLogJamLoggerProvider();
                                              });
             return webHostBuilder;
         }

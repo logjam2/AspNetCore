@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Xunit;
 using Xunit.Abstractions;
@@ -45,21 +46,25 @@ namespace LogJam.AspNetCore
             var hostBuilder = new WebHostBuilder();
 
             // Configure services
+#if ASPNETCORE2_0
+            hostBuilder.UseLogJam((LogManagerConfig config, WebHostBuilderContext hostBuilderContext) =>
+#else
             hostBuilder.UseLogJam((LogManagerConfig config, IServiceProvider serviceProvider) =>
+#endif
                                   {
                                       config.UseTestOutput(_testOutput);
                                       config.UseTextWriter(testOutput);
-                                  },
-                                  () => new LogJamLoggerSettings
-                                        {
-                                            IncludeScopes = true,
-                                            Filter = (category, logLevel) => true
-                                        });
+                                  });
 
             hostBuilder.ConfigureServices(serviceCollection =>
                                           {
                                               IMvcCoreBuilder mvcCoreBuilder = serviceCollection.AddMvcCore();
                                               mvcCoreBuilder.AddJsonFormatters();
+#if ASPNETCORE2_0
+                                              serviceCollection.Configure<LoggerFilterOptions>(filterOptions => filterOptions.MinLevel = LogLevel.Trace );
+#else
+                                              serviceCollection.Configure<FilterLoggerSettings>(filterSettings => filterSettings.Add("Default", LogLevel.Trace));
+#endif
                                           });
 
             // Configure webapp
@@ -68,11 +73,11 @@ namespace LogJam.AspNetCore
                                       appBuilder.UseStatusCodePages();
                                       appBuilder.UseExceptionHandler(new ExceptionHandlerOptions()
                                                                      {
-                                                                         ExceptionHandler = async context => {}
-                                                                                            //{
-                                                                                            //    context.Response.StatusCode = 500;
-                                                                                            //    await context.Response.WriteAsync("Unhandled exception");
-                                                                                            //}
+                                                                         ExceptionHandler = async context =>
+                                                                                            {
+                                                                                                context.Response.StatusCode = 500;
+                                                                                                await context.Response.WriteAsync("Unhandled exception");
+                                                                                            }
                                                                      });
                                       appBuilder.UseMvc();
                                   });
@@ -131,7 +136,6 @@ namespace LogJam.AspNetCore
             {
                 var httpClient = testServer.CreateClient();
                 var response = await httpClient.GetAsync("/api/test/exception");
-                // TODO: Fix this
                 Assert.Equal(500, (int) response.StatusCode);
 
                 _testOutput.WriteLine("Response body:\r\n" + await response.Content.ReadAsStringAsync());

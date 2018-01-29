@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <remarks>
         /// This method can be called multiple times. All <paramref name="configureLogManager"/> methods are called sequentially.
         /// </remarks>
-        public static IServiceCollection UseLogJam(this IServiceCollection serviceCollection, Action<LogManagerConfig, IServiceProvider> configureLogManager)
+        public static IServiceCollection AddLogJam(this IServiceCollection serviceCollection, Action<LogManagerConfig, IServiceProvider> configureLogManager)
         {
             if (serviceCollection == null)
             {
@@ -119,7 +119,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <remarks>
         /// This method can be called multiple times. All <paramref name="configureTraceManager"/> methods are called sequentially.
         /// </remarks>
-        public static IServiceCollection UseLogJamTracing(this IServiceCollection serviceCollection, Action<TraceManagerConfig, IServiceProvider> configureTraceManager)
+        public static IServiceCollection AddLogJamTracing(this IServiceCollection serviceCollection, Action<TraceManagerConfig, IServiceProvider> configureTraceManager)
         {
             if (serviceCollection == null)
             {
@@ -145,58 +145,28 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             // Setup default text formatters
-            serviceCollection.UseLogJam((logManagerConfig, serviceProvider) => logManagerConfig.Writers.FormatAll(new DefaultTraceFormatter()));
+            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => logManagerConfig.Writers.FormatAll(new DefaultTraceFormatter()));
 
             return serviceCollection;
         }
 
-        /// <summary>Uses LogJam for calls to <c>Microsoft.Extensions.Logging</c> APIs. Replaces calls to <c>IServiceCollection.AddLogging()</c>.</summary>
+        /// <summary>Adds LogJam for calls to <c>Microsoft.Extensions.Logging</c> APIs. <c>IServiceCollection.AddLogging()</c> must also be called.</summary>
         /// <param name="serviceCollection">The <see cref="IServiceCollection"/> to configure.</param>
-        /// <param name="createLogJamLoggerSettings">Creates <see cref="LogJamLoggerSettings"/>. May be <c>null</c>.</param>
         /// <returns>The <paramref name="serviceCollection"/>.</returns>
         /// <remarks>
         /// This method can only be called once per serviceCollection.
         /// </remarks>
-        public static IServiceCollection UseLogJamLoggerFactory(this IServiceCollection serviceCollection, Func<ILogJamLoggerSettings> createLogJamLoggerSettings)
+        public static IServiceCollection AddLogJamLoggerProvider(this IServiceCollection serviceCollection)
         {
             if (serviceCollection == null)
             {
                 throw new ArgumentNullException(nameof(serviceCollection));
             }
 
-            serviceCollection.TryAddSingleton<ILogJamLoggerSettings>(serviceProvider =>
-                                                                  {
-                                                                      if (createLogJamLoggerSettings == null)
-                                                                      {
-                                                                          return new LogJamLoggerSettings
-                                                                                 {
-                                                                                     Filter = (category, level) => level >= LogLevel.Information
-                                                                                 };
-                                                                      }
-                                                                      else
-                                                                      {
-                                                                          return createLogJamLoggerSettings();
-                                                                      }
-                                                                  });
-
-            // Add/replace ILoggerFactory with one that only uses LogJam, to avoid duplicate logging. If duplicate logging paths are desired, either
-            // don't use this method, or explicitly replace the <c>ILoggerFactory</c> after calling this.
-            serviceCollection.Replace(new ServiceDescriptor(typeof(ILoggerFactory),
-                                                            serviceProvider =>
-                                                            {
-                                                                // TODO: Consider using a more performant implementation than LoggerFactory for this use case
-                                                                var loggerFactory = new LoggerFactory();
-                                                                loggerFactory.AddLogJam(serviceProvider.GetService<ILogJamLoggerSettings>(),
-                                                                                        serviceProvider.GetService<LogManager>(),
-                                                                                        false);
-                                                                return loggerFactory;
-                                                            }, ServiceLifetime.Singleton));
-
-            // Do this so that IServiceCollection.AddLogging() isn't needed (but should be ok if both are called).
-            serviceCollection.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
+            serviceCollection.AddSingleton<ILoggerProvider, LogJamLoggerProvider>();
 
             // Setup default text formatters
-            serviceCollection.UseLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig, serviceProvider.GetService<ILogJamLoggerSettings>()) );
+            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig) );
 
             return serviceCollection;
         }
@@ -205,15 +175,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Enables the default text formatters for entry types that are logged when <see cref="ILogger"/> instances are used for logging.
         /// </summary>
         /// <param name="logManagerConfig"></param>
-        /// <param name="loggerSettings"></param>
-        internal static void AddDefaultLoggerTextFormatters(LogManagerConfig logManagerConfig, ILogJamLoggerSettings loggerSettings)
+        internal static void AddDefaultLoggerTextFormatters(LogManagerConfig logManagerConfig)
         {
             logManagerConfig.Writers.FormatAll<LoggerEntry>(new DefaultLoggerEntryFormatter());
-            if (loggerSettings.IncludeScopes)
-            {
-                logManagerConfig.Writers.FormatAll(new GenericLoggerBeginScopeEntryFormatter());
-                logManagerConfig.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
-            }
+            logManagerConfig.Writers.FormatAll(new GenericLoggerBeginScopeEntryFormatter());
+            logManagerConfig.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
         }
 
     }

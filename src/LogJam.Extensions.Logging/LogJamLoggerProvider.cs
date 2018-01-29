@@ -21,13 +21,15 @@ namespace LogJam.Extensions.Logging
     /// <summary>
     /// <see cref="ILoggerProvider" /> for enabling LogJam for <c>Microsoft.Extensions.Logging</c> calls.
     /// </summary>
-    //[ProviderAlias("LogJam")]
+#if ASPNETCORE2_0
+    [ProviderAlias("LogJam")]
+#endif
     public sealed class LogJamLoggerProvider : ILoggerProvider
     {
 
-        private readonly ILogJamLoggerSettings _loggerSettings;
         private readonly LogManager _logManager;
         private readonly bool _disposeLogManager;
+        private readonly Func<string, LogLevel, bool> _filter;
 
 
         private readonly ConcurrentDictionary<string, LogJamLogger> _loggers =
@@ -36,14 +38,25 @@ namespace LogJam.Extensions.Logging
         /// <summary>
         /// Initializes a new <see cref="LogJamLoggerProvider"/>, using the specified <paramref name="logManager"/>.
         /// </summary>
-        /// <param name="loggerSettings"><see cref="ILogJamLoggerSettings"/> that specify what is logged.</param>
         /// <param name="logManager">A <see cref="LogManager"/>, which manages which log writers are used.</param>
-        /// <param name="disposeLogManager">If <c>true</c>, <paramref name="logManager"/> is disposed when this <see cref="LogJamLoggerProvider"/> is <c>Dispose()</c>ed.</param>
-        public LogJamLoggerProvider(ILogJamLoggerSettings loggerSettings, LogManager logManager, bool disposeLogManager)
+        public LogJamLoggerProvider(LogManager logManager)
         {
-            _loggerSettings = loggerSettings ?? new LogJamLoggerSettings();
+            _logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
+            _disposeLogManager = false;
+            _filter = null;
+        }
+
+        /// <summary>
+        /// Initializes a new <see cref="LogJamLoggerProvider"/>, using the specified <paramref name="logManager"/> and filter function.
+        /// </summary>
+        /// <param name="logManager">A <see cref="LogManager"/>, which manages which log writers are used.</param>
+        /// <param name="disposeLogManager"><c>true</c> to shutdown + dispose <paramref name="logManager"/> when this provider is disposed.</param>
+        /// <param name="filter">A function used to filter events based on the log level. If <c>null</c> is passed in, the default of <see cref="LogJamLogger.LogInformation"/> is used.</param>
+        public LogJamLoggerProvider(LogManager logManager, bool disposeLogManager, Func<string, LogLevel, bool> filter)
+        {
             _logManager = logManager ?? throw new ArgumentNullException(nameof(logManager));
             _disposeLogManager = disposeLogManager;
+            _filter = filter ?? LogJamLogger.LogInformation;
         }
 
         /// <summary>
@@ -63,11 +76,6 @@ namespace LogJam.Extensions.Logging
         public LogManager LogManager => _logManager;
 
         /// <summary>
-        /// Returns the <see cref="ILogJamLoggerSettings"/> for this provider.
-        /// </summary>
-        internal ILogJamLoggerSettings Settings => _loggerSettings;
-
-        /// <summary>
         /// Returns a <see cref="ILogger"/> for <paramref name="categoryName"/>.
         /// </summary>
         /// <param name="categoryName"></param>
@@ -79,7 +87,7 @@ namespace LogJam.Extensions.Logging
 
         private LogJamLogger CreateLogJamLogger(string categoryName)
         {
-            return new LogJamLogger(categoryName, _loggerSettings.Filter, this);
+            return new LogJamLogger(categoryName, _filter, this);
         }
 
         internal bool TryGetEntryWriter<TEntry>(out IEntryWriter<TEntry> entryWriter)

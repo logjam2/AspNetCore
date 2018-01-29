@@ -45,6 +45,11 @@ namespace LogJam.Extensions.Logging.Entries
             DefaultFormatter = formatter;
         }
 
+        public string GetFormattedMessage()
+        {
+            return DefaultFormatter?.Invoke(State, Exception);
+        }
+
     }
 
 }

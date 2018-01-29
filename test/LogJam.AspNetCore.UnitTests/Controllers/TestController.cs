@@ -30,7 +30,7 @@ namespace LogJam.AspNetCore.Controllers
         [HttpGet("exception")]
         public string[] ThrowException()
         {
-            throw new InvalidOperationException("Expected test exception");
+            throw new Exception("Expected test exception");
         }
 
     }

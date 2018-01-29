@@ -25,15 +25,15 @@ namespace LogJam.Extensions.Logging
         /// <summary>
         /// Filter function to log everything.
         /// </summary>
-        public static Func<string, LogLevel, bool> LogEverything = (categoryName, logLevel) => true;
+        public static readonly Func<string, LogLevel, bool> LogEverything = (categoryName, logLevel) => true;
         /// <summary>
         /// Filter function to log Information and higher.
         /// </summary>
-        public static Func<string, LogLevel, bool> LogInfo = (categoryName, logLevel) => logLevel >= LogLevel.Information;
+        public static readonly Func<string, LogLevel, bool> LogInformation = (categoryName, logLevel) => logLevel >= LogLevel.Information;
         /// <summary>
         /// Filter function to log Information and higher.
         /// </summary>
-        public static Func<string, LogLevel, bool> LogNothing = (categoryName, logLevel) => false;
+        public static readonly Func<string, LogLevel, bool> LogNothing = (categoryName, logLevel) => false;
 
         /// <summary>
         /// The parent <see cref="LogJamLoggerProvider"/>.
@@ -45,8 +45,8 @@ namespace LogJam.Extensions.Logging
         internal LogJamLogger(string name, Func<string, LogLevel, bool> filter, LogJamLoggerProvider provider)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Filter = filter ?? LogInfo;
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            Filter = filter;
         }
 
         /// <summary>
@@ -61,7 +61,9 @@ namespace LogJam.Extensions.Logging
         public Func<string, LogLevel, bool> Filter
         {
             get => _filter;
-            set => _filter = value ?? throw new ArgumentNullException(nameof(value));
+            // Configured filtering is a layer that is checked before the call makes it to the ILogger;
+            // so default to logging everything.
+            set => _filter = value ?? LogEverything;
         }
 
 #region Implementation of ILogger
@@ -109,8 +111,7 @@ namespace LogJam.Extensions.Logging
         /// <returns></returns>
         public IDisposable BeginScope<TState>(TState state)
         {
-            if ((! _provider.Settings.IncludeScopes)
-                || state.Equals(default(TState)))
+            if (state.Equals(default(TState)))
             {
                 return null;
             }

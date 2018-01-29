@@ -317,9 +317,11 @@ namespace LogJam.Extensions.Logging
                           IntProperty = 2,
                           StringProperty = "two"
                       };
-            var list = new List<ClassWithPrimitiveProperties>();
-            list.Add(elt);
-            list.Add(elt);
+            var list = new List<ClassWithPrimitiveProperties>
+                       {
+                           elt,
+                           elt
+                       };
 
             _reflectionFormatter.FormatObject(list, _formatWriter);
 

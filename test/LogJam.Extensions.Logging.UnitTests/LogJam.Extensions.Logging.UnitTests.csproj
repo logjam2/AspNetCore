@@ -6,9 +6,25 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
+
+  <PropertyGroup Condition=" '$(TargetFramework)' != 'net46' ">
+    <DefineConstants>$(DefineConstants);ASPNETCORE2_0</DefineConstants>
+    <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <AspNetCoreVersion>1.1.0</AspNetCoreVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="LogJam" Version="$(LogJamDependencyVersion)" />
     <PackageReference Include="LogJam.XUnit2" Version="$(LogJamDependencyVersion)" />
+
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.0" Condition=" '$(AspNetCoreVersion)' == '1.1.0' " />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
