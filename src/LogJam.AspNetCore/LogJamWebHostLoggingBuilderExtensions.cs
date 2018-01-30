@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.Logging
                 loggingBuilder.Services.AddLogJam(null);
             }
 
-            loggingBuilder.Services.AddSingleton<ILoggerProvider, LogJamLoggerProvider>();
+            loggingBuilder.Services.AddLogJamLoggerProvider();
             return loggingBuilder;
         }
 

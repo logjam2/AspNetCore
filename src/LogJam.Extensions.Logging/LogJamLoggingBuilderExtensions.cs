@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.Logging
         public static ILoggingBuilder AddLogJam(this ILoggingBuilder loggingBuilder)
         {
             loggingBuilder.Services.AddLogJam(null);
-            loggingBuilder.Services.AddSingleton<ILoggerProvider, LogJamLoggerProvider>();
+            loggingBuilder.Services.AddLogJamLoggerProvider();
             return loggingBuilder;
         }
 
