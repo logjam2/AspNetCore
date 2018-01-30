@@ -33,7 +33,7 @@ Task("Set-Version")
   Information("Found Version info: " + gitVersionResult.Dump());
   if (AppVeyor.IsRunningOnAppVeyor)
   {
-    AppVeyor.UpdateBuildVersion(gitVersionResult.NuGetVersionV2);
+    AppVeyor.UpdateBuildVersion(gitVersionResult.NuGetVersionV2 + "++" + AppVeyor.Environment.Build.Number);
   }
   else if (TeamCity.IsRunningOnTeamCity)
   {
