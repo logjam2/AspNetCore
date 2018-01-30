@@ -149,7 +149,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return serviceCollection;
         }
 
-        /// <summary>Registers a LogJam <see cref="ITracerFactory"/> singleton in <paramref name="serviceCollection"/>. Tracing  It is configured via <paramref name="configureTraceManager"/>.</summary>
+        /// <summary>Registers a LogJam <see cref="ITracerFactory"/> singleton in <paramref name="serviceCollection"/>.</summary>
         /// <param name="serviceCollection">The <see cref="IServiceCollection"/> to configure.</param>
         /// <param name="switchSet">A <see cref="SwitchSet"/>, which controls which trace levels are logged. May be <c>null</c>, which results in <see cref="TraceLevel.Info"/> and higher being logged.</param>
         /// <returns>The <paramref name="serviceCollection"/>.</returns>

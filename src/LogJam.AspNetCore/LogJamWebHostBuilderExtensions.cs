@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Hosting
 #if ASPNETCORE2_0
         // WebHostBuilderContext isn't defined before ASP.NET Core 2.0
 
-        /// <summary>Integrates LogJam into the web host.</summary>
+        /// <summary>Integrates LogJam logging into the web host.</summary>
         /// <param name="webHostBuilder">The <see cref="IWebHostBuilder"/> to configure.</param>
         /// <param name="configureLogManager">A configuration delegate, which may configure a <see cref="LogManagerConfig"/> instance.</param>
         /// <returns>The <paramref name="webHostBuilder"/></returns>
@@ -79,7 +79,7 @@ namespace Microsoft.AspNetCore.Hosting
         }
 #endif
 
-        /// <summary>Integrates LogJam into the web host.</summary>
+        /// <summary>Integrates LogJam logging into the web host.</summary>
         /// <param name="webHostBuilder">The <see cref="IWebHostBuilder" /> to configure.</param>
         /// <param name="configureLogJam">A configuration delegate, which may configure the <see cref="LogManagerConfig" /> instance. May be <c>null</c>.</param>
         /// <returns>The <paramref name="webHostBuilder" /></returns>
@@ -99,6 +99,12 @@ namespace Microsoft.AspNetCore.Hosting
             return webHostBuilder;
         }
 
+        /// <summary>
+        /// Enables LogJam tracing within the web host.
+        /// </summary>
+        /// <param name="webHostBuilder">The <see cref="IWebHostBuilder" /> to configure.</param>
+        /// <param name="switchSet">A <see cref="SwitchSet"/>, which controls which trace levels are logged. May be <c>null</c>, which results in <see cref="TraceLevel.Info"/> and higher being logged.</param>
+        /// <returns>The <paramref name="webHostBuilder" /></returns>
         public static IWebHostBuilder UseLogJamTracing(this IWebHostBuilder webHostBuilder, SwitchSet switchSet = null)
         {
             if (webHostBuilder == null)
