@@ -130,7 +130,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 serviceCollection.ConfigureTraceManager(configureTraceManager);
             }
 
-            serviceCollection.TryAddSingleton<TraceManagerConfig>(new TraceManagerConfig());
+            serviceCollection.TryAddSingleton<TraceManagerConfig>(serviceProvider => new TraceManagerConfig(serviceProvider.GetRequiredService<LogManagerConfig>()));
             serviceCollection.TryAddSingleton<ITracerFactory>(serviceProvider =>
             {
                 var traceManagerConfig = serviceProvider.GetRequiredService<TraceManagerConfig>();
@@ -140,13 +140,22 @@ namespace Microsoft.Extensions.DependencyInjection
                     configurationAction(traceManagerConfig, serviceProvider);
                 }
 
-                return new TraceManager(traceManagerConfig);
+                return new TraceManager(serviceProvider.GetRequiredService<LogManager>(), traceManagerConfig);
             });
 
             // Setup default text formatters
-            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => logManagerConfig.Writers.FormatAll(new DefaultTraceFormatter()));
+            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => logManagerConfig.FormatAllTextLogWriters(new DefaultTraceFormatter()));
 
             return serviceCollection;
+        }
+
+        /// <summary>Registers a LogJam <see cref="ITracerFactory"/> singleton in <paramref name="serviceCollection"/>. Tracing  It is configured via <paramref name="configureTraceManager"/>.</summary>
+        /// <param name="serviceCollection">The <see cref="IServiceCollection"/> to configure.</param>
+        /// <param name="switchSet">A <see cref="SwitchSet"/>, which controls which trace levels are logged. May be <c>null</c>, which results in <see cref="TraceLevel.Info"/> and higher being logged.</param>
+        /// <returns>The <paramref name="serviceCollection"/>.</returns>
+        public static IServiceCollection AddLogJamTracing(this IServiceCollection serviceCollection, SwitchSet switchSet = null)
+        {
+            return serviceCollection.AddLogJamTracing((traceManagerConfig, s) => traceManagerConfig.TraceToAllLogWriters(switchSet));
         }
 
         /// <summary>Adds LogJam for calls to <c>Microsoft.Extensions.Logging</c> APIs. <c>IServiceCollection.AddLogging()</c> does not need to called separately.</summary>
@@ -176,7 +185,7 @@ namespace Microsoft.Extensions.DependencyInjection
 #endif
 
             // Setup default text formatters
-            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig) );
+            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig));
 
             return serviceCollection;
         }
@@ -187,9 +196,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="logManagerConfig"></param>
         internal static void AddDefaultLoggerTextFormatters(LogManagerConfig logManagerConfig)
         {
-            logManagerConfig.Writers.FormatAll<LoggerEntry>(new DefaultLoggerEntryFormatter());
-            logManagerConfig.Writers.FormatAll(new GenericLoggerBeginScopeEntryFormatter());
-            logManagerConfig.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
+            logManagerConfig.FormatAllTextLogWriters(new DefaultLoggerEntryFormatter());
+            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerBeginScopeEntryFormatter());
+            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerEndScopeEntryFormatter());
         }
 
     }

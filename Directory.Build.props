@@ -31,7 +31,7 @@ MSBuild file that is automatically imported into projects in subdirectories.
     <!-- Use embeded PDBs in netstandard assemblies (when NOT using CodeContracts) - Portable PDBs crash ccrewrite. -->
     <DebugType>embedded</DebugType>
 
-    <LogJamDependencyVersion>1.1.0-beta0119</LogJamDependencyVersion>
+    <LogJamDependencyVersion>1.2.0-alpha0001</LogJamDependencyVersion>
   </PropertyGroup>
 
 </Project>

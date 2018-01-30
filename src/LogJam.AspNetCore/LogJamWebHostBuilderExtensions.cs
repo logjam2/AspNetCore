@@ -10,6 +10,9 @@
 using System;
 
 using LogJam.Config;
+using LogJam.Trace;
+using LogJam.Trace.Config;
+using LogJam.Trace.Switches;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,13 +31,13 @@ namespace Microsoft.AspNetCore.Hosting
 
         /// <summary>Integrates LogJam into the web host.</summary>
         /// <param name="webHostBuilder">The <see cref="IWebHostBuilder"/> to configure.</param>
-        /// <param name="configureLogJam">A configuration delegate, which may configure a <see cref="LogManagerConfig"/> instance.</param>
+        /// <param name="configureLogManager">A configuration delegate, which may configure a <see cref="LogManagerConfig"/> instance.</param>
         /// <returns>The <paramref name="webHostBuilder"/></returns>
         /// <remarks>
-        /// This overload accepts a <paramref name="configureLogJam"/> delegate with a <see cref="WebHostBuilderContext"/> argument,
+        /// This overload accepts a <paramref name="configureLogManager"/> delegate with a <see cref="WebHostBuilderContext"/> argument,
         /// which can be used to access host environment settings. This overload requires ASP.NET Core 2.0 or newer.
         /// </remarks>
-        public static IWebHostBuilder UseLogJam(this IWebHostBuilder webHostBuilder, Action<LogManagerConfig, WebHostBuilderContext> configureLogJam)
+        public static IWebHostBuilder UseLogJam(this IWebHostBuilder webHostBuilder, Action<LogManagerConfig, WebHostBuilderContext> configureLogManager)
         {
             if (webHostBuilder == null)
             {
@@ -43,8 +46,34 @@ namespace Microsoft.AspNetCore.Hosting
 
             webHostBuilder.ConfigureServices((webhostBuilderContext, serviceCollection) =>
                                              {
-                                                 serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => configureLogJam(logManagerConfig, webhostBuilderContext));
+                                                 serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => configureLogManager(logManagerConfig, webhostBuilderContext));
                                                  serviceCollection.AddLogJamLoggerProvider();
+                                             });
+            return webHostBuilder;
+        }
+
+        /// <summary>Configures the LogJam <see cref="LogManagerConfig"/>.</summary>
+        /// <param name="webHostBuilder">The <see cref="IWebHostBuilder"/> to configure.</param>
+        /// <param name="configureLogManager">A configuration delegate, which configures a <see cref="LogManagerConfig"/> instance.</param>
+        /// <returns>The <paramref name="webHostBuilder"/></returns>
+        /// <remarks>
+        /// This method accepts a <paramref name="configureLogManager"/> delegate with a <see cref="WebHostBuilderContext"/> argument,
+        /// which can be used to access host environment settings. This overload requires ASP.NET Core 2.0 or newer.
+        /// </remarks>
+        public static IWebHostBuilder ConfigureLogManager(this IWebHostBuilder webHostBuilder, Action<LogManagerConfig, WebHostBuilderContext> configureLogManager)
+        {
+            if (webHostBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(webHostBuilder));
+            }
+            if (configureLogManager == null)
+            {
+                throw new ArgumentNullException(nameof(configureLogManager));
+            }
+
+            webHostBuilder.ConfigureServices((webhostBuilderContext, serviceCollection) =>
+                                             {
+                                                 serviceCollection.ConfigureLogManager((logManagerConfig, serviceProvider) => configureLogManager(logManagerConfig, webhostBuilderContext));
                                              });
             return webHostBuilder;
         }
@@ -70,5 +99,18 @@ namespace Microsoft.AspNetCore.Hosting
             return webHostBuilder;
         }
 
+        public static IWebHostBuilder UseLogJamTracing(this IWebHostBuilder webHostBuilder, SwitchSet switchSet = null)
+        {
+            if (webHostBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(webHostBuilder));
+            }
+
+            webHostBuilder.ConfigureServices((serviceCollection) =>
+                                             {
+                                                 serviceCollection.AddLogJamTracing(switchSet);
+                                             });
+            return webHostBuilder;
+        }
     }
 }

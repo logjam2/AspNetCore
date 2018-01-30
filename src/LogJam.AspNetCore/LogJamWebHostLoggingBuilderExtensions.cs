@@ -16,6 +16,7 @@ using LogJam;
 using LogJam.Config;
 using LogJam.Extensions.Logging;
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -31,16 +32,25 @@ namespace Microsoft.Extensions.Logging
     /// method; or use <code>ILoggerFactory.AddLogJam()</code>.
     /// </summary>
     /// <seealso cref="LogJamLoggerFactoryExtensions"/>
-    public static class LogJamLoggingBuilderExtensions
+    public static class LogJamWebHostLoggingBuilderExtensions
     {
 
         /// <summary>
         /// Adds a <see cref="LogJamLoggerProvider"/> to the factory.
         /// </summary>
         /// <param name="loggingBuilder">The <see cref="ILoggingBuilder"/> to use.</param>
-        public static ILoggingBuilder AddLogJam(this ILoggingBuilder loggingBuilder)
+        /// <param name="configureLogManagerAction">An optional configuration delegate that updates the <see cref="LogManagerConfig"/>.</param>
+        public static ILoggingBuilder AddLogJam(this ILoggingBuilder loggingBuilder, Action<LogManagerConfig, WebHostBuilderContext> configureLogManagerAction)
         {
-            loggingBuilder.Services.AddLogJam(null);
+            if (configureLogManagerAction != null)
+            {
+                loggingBuilder.Services.AddLogJam((logManagerConfig, serviceProvider) => configureLogManagerAction(logManagerConfig, serviceProvider.GetService<WebHostBuilderContext>()));
+            }
+            else
+            {
+                loggingBuilder.Services.AddLogJam(null);
+            }
+
             loggingBuilder.Services.AddSingleton<ILoggerProvider, LogJamLoggerProvider>();
             return loggingBuilder;
         }

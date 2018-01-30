@@ -212,7 +212,7 @@ namespace LogJam.Extensions.Logging
             Assert.DoesNotContain("\r\n", output.Trim());
             Assert.Contains("IntProperty:10000", output);
             Assert.Contains("StringProperty:foo", output);
-            Assert.Contains("DateTimeProperty:\"12/31/2017 12:00:00 AM\"", output);
+            Assert.Contains($"DateTimeProperty:\"{c.DateTimeProperty}\"", output);
         }
 
         [Fact]
