@@ -28,10 +28,12 @@ namespace LogJam.Extensions.Logging.Format
         /// Initializes a new <see cref="GenericLoggerBeginScopeEntryFormatter"/>.
         /// </summary>
         /// <param name="includeTypeNames">Set to <c>true</c> to include type names in state object output. Set to <c>false</c> to exclude type names. Defaults to <c>true</c>.</param>
-        public GenericLoggerBeginScopeEntryFormatter(bool includeTypeNames = true)
+        /// <param name="maxDepth">The max depth to walk when formatting objects. Default is 2.</param>
+        public GenericLoggerBeginScopeEntryFormatter(bool includeTypeNames = true, int maxDepth = 2)
         : this(new ReflectionFormatter()
                {
-                   IncludeTypeNames = includeTypeNames
+                   IncludeTypeNames = includeTypeNames,
+                   MaxDepth = maxDepth
                })
         {}
 
@@ -40,6 +42,11 @@ namespace LogJam.Extensions.Logging.Format
             IncludeTimestamp = true;
             _reflectionFormatter = reflectionFormatter ?? throw new ArgumentNullException(nameof(reflectionFormatter));
         }
+
+        /// <summary>
+        /// The max depth to walk when formatting objects.
+        /// </summary>
+        public int MaxDepth { get => _reflectionFormatter.MaxDepth; set => _reflectionFormatter.MaxDepth = value; }
 
         /// <summary>
         /// <c>true</c> to include the Date when formatting <see cref="LoggerEntry" />s. Default is <c>false</c>.

@@ -30,7 +30,7 @@ namespace LogJam.Extensions.Logging.Format
     internal sealed class ReflectionFormatter
     {
 
-        private const int c_maxRecursion = 10;
+        private const int c_defaultMaxRecursion = 10;
 
         private static readonly Type s_typeOfGenericIEnumerable = typeof(IEnumerable<>);
         private static readonly Type s_typeOfKeyValuePair = typeof(KeyValuePair<,>);
@@ -41,6 +41,11 @@ namespace LogJam.Extensions.Logging.Format
         ///  Set to <c>true</c> to include type names in the output.
         /// </summary>
         public bool IncludeTypeNames { get; set; }
+
+        /// <summary>
+        /// The max depth to walk when formatting objects.
+        /// </summary>
+        public int MaxDepth { get; set; } = c_defaultMaxRecursion;
 
         /// <summary>
         /// Reflects object <paramref name="o"/>, writes its type and properties to <paramref name="formatWriter"/>.
@@ -85,7 +90,7 @@ namespace LogJam.Extensions.Logging.Format
                 return recursionLevel;
             }
 
-            if (recursionLevel >= c_maxRecursion)
+            if (recursionLevel >= MaxDepth)
             {
                 formatWriter.WriteText("(Recursion limit exceeded)", ColorCategory.Warning);
                 return recursionLevel;

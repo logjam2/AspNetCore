@@ -1,22 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GenericLoggerBeginScopeEntryFormatter.cs">
-// Copyright (c) 2011-2017 https://github.com/logjam2.  
+// <copyright file="GenericLoggerEndScopeEntryFormatter.cs">
+// Copyright (c) 2011-2018 https://github.com/logjam2.  
 // </copyright>
 // Licensed under the <a href="https://github.com/logjam2/logjam/blob/master/LICENSE.txt">Apache License, Version 2.0</a>;
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+
+using LogJam.Extensions.Logging.Entries;
+using LogJam.Writer.Text;
+
 namespace LogJam.Extensions.Logging.Format
 {
-    using System;
-
-    using LogJam.Extensions.Logging.Entries;
-    using LogJam.Writer.Text;
-
 
     /// <summary>
-    /// Fallback formatter for writing <see cref="LoggerEndScopeEntry{TState}"/> entries to text logs. Can be enabled to log entries
+    /// Fallback formatter for writing <see cref="LoggerEndScopeEntry{TState}" /> entries to text logs. Can be enabled to log entries
     /// when a <c>TState</c>-specific formatter is not implemented.
     /// </summary>
     public sealed class GenericLoggerEndScopeEntryFormatter : EntryFormatter<LoggerEndScopeEntry<object>>
@@ -25,21 +25,30 @@ namespace LogJam.Extensions.Logging.Format
         private readonly ReflectionFormatter _reflectionFormatter;
 
         /// <summary>
-        /// Initializes a new <see cref="GenericLoggerEndScopeEntryFormatter"/>.
+        /// Initializes a new <see cref="GenericLoggerEndScopeEntryFormatter" />.
         /// </summary>
-        /// <param name="includeTypeNames">Set to <c>true</c> to include type names in state object output. Set to <c>false</c> to exclude type names. Defaults to <c>true</c>.</param>
-        public GenericLoggerEndScopeEntryFormatter(bool includeTypeNames = true)
+        /// <param name="includeTypeNames">
+        /// Set to <c>true</c> to include type names in state object output. Set to <c>false</c> to exclude type names. Defaults to <c>true</c>.
+        /// </param>
+        /// <param name="maxDepth">The max depth to walk when formatting objects. Default is 2.</param>
+        public GenericLoggerEndScopeEntryFormatter(bool includeTypeNames = true, int maxDepth = 2)
             : this(new ReflectionFormatter()
                    {
-                       IncludeTypeNames = includeTypeNames
+                       IncludeTypeNames = includeTypeNames,
+                       MaxDepth = maxDepth
                    })
-        {}
+        { }
 
         internal GenericLoggerEndScopeEntryFormatter(ReflectionFormatter reflectionFormatter)
         {
             IncludeTimestamp = true;
             _reflectionFormatter = reflectionFormatter ?? throw new ArgumentNullException(nameof(reflectionFormatter));
         }
+
+        /// <summary>
+        /// The max depth to walk when formatting objects.
+        /// </summary>
+        public int MaxDepth { get => _reflectionFormatter.MaxDepth; set => _reflectionFormatter.MaxDepth = value; }
 
         /// <summary>
         /// <c>true</c> to include the Date when formatting <see cref="LoggerEntry" />s. Default is <c>false</c>.
@@ -60,6 +69,7 @@ namespace LogJam.Extensions.Logging.Format
             {
                 formatWriter.WriteDate(entry.TimestampUtc, ColorCategory.Debug);
             }
+
             if (IncludeTimestamp)
             {
                 formatWriter.WriteTimestamp(entry.TimestampUtc, ColorCategory.Detail);
