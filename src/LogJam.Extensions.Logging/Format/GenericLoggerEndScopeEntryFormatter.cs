@@ -16,13 +16,11 @@ namespace LogJam.Extensions.Logging.Format
 {
 
     /// <summary>
-    /// Fallback formatter for writing <see cref="LoggerEndScopeEntry{TState}" /> entries to text logs. Can be enabled to log entries
+    /// Fallback formatter for writing <see cref="LoggerEndScopeEntry" /> entries to text logs. Can be enabled for log entries
     /// when a <c>TState</c>-specific formatter is not implemented.
     /// </summary>
-    public sealed class GenericLoggerEndScopeEntryFormatter : EntryFormatter<LoggerEndScopeEntry<object>>
+    public sealed class GenericLoggerEndScopeEntryFormatter : EntryFormatter<LoggerEndScopeEntry>
     {
-
-        private readonly ReflectionFormatter _reflectionFormatter;
 
         /// <summary>
         /// Initializes a new <see cref="GenericLoggerEndScopeEntryFormatter" />.
@@ -31,24 +29,10 @@ namespace LogJam.Extensions.Logging.Format
         /// Set to <c>true</c> to include type names in state object output. Set to <c>false</c> to exclude type names. Defaults to <c>true</c>.
         /// </param>
         /// <param name="maxDepth">The max depth to walk when formatting objects. Default is 2.</param>
-        public GenericLoggerEndScopeEntryFormatter(bool includeTypeNames = true, int maxDepth = 2)
-            : this(new ReflectionFormatter()
-                   {
-                       IncludeTypeNames = includeTypeNames,
-                       MaxDepth = maxDepth
-                   })
-        { }
-
-        internal GenericLoggerEndScopeEntryFormatter(ReflectionFormatter reflectionFormatter)
+        public GenericLoggerEndScopeEntryFormatter()
         {
             IncludeTimestamp = true;
-            _reflectionFormatter = reflectionFormatter ?? throw new ArgumentNullException(nameof(reflectionFormatter));
         }
-
-        /// <summary>
-        /// The max depth to walk when formatting objects.
-        /// </summary>
-        public int MaxDepth { get => _reflectionFormatter.MaxDepth; set => _reflectionFormatter.MaxDepth = value; }
 
         /// <summary>
         /// <c>true</c> to include the Date when formatting <see cref="LoggerEntry" />s. Default is <c>false</c>.
@@ -61,7 +45,7 @@ namespace LogJam.Extensions.Logging.Format
         public bool IncludeTimestamp { get; set; }
 
         /// <inheritdoc />
-        public override void Format(ref LoggerEndScopeEntry<object> entry, FormatWriter formatWriter)
+        public override void Format(ref LoggerEndScopeEntry entry, FormatWriter formatWriter)
         {
             formatWriter.BeginEntry();
 
@@ -78,7 +62,7 @@ namespace LogJam.Extensions.Logging.Format
             formatWriter.WriteField("End", ColorCategory.Detail, 7);
             formatWriter.WriteAbbreviatedTypeName(entry.CategoryName, ColorCategory.Debug, 36);
 
-            _reflectionFormatter.FormatObject(entry.State, formatWriter);
+            formatWriter.WriteField(entry.StateString, ColorCategory.Detail);
 
             formatWriter.EndEntry();
         }

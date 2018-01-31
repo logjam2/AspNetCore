@@ -7,6 +7,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.Collections;
+using System.Collections.Generic;
+
 namespace LogJam.Extensions.Logging
 {
     using System;
@@ -111,18 +114,41 @@ namespace LogJam.Extensions.Logging
         /// <returns></returns>
         public IDisposable BeginScope<TState>(TState state)
         {
-            if (state.Equals(default(TState)))
+            if (! IsEnabled(LogLevel.Critical)
+                || state.Equals(default(TState)))
             {
-                return null;
+                return NoopDisposable.Instance;
             }
 
-            var loggerScope = new LoggerScope<TState>(Name, state, _provider);
-            loggerScope.WriteBeginScope();
-            return loggerScope;
+            if (state is IEnumerable<KeyValuePair<string, object>> kvp)
+            {
+                // TODO: Create a Scope object that minimizes boxing for this scenario
+                var loggerScope = new LoggerScope<IEnumerable<KeyValuePair<string, object>>>(Name, kvp, _provider);
+                loggerScope.WriteBeginScope();
+                return loggerScope;
+            }
+            else
+            {
+                var loggerScope = new LoggerScope<string>(Name, state.ToString(), _provider);
+                loggerScope.WriteBeginScope();
+                return loggerScope;
+            }
         }
 
 #endregion
 
+
+        private class NoopDisposable : IDisposable
+        {
+            internal static NoopDisposable Instance = new NoopDisposable();
+
+            private NoopDisposable()
+            {}
+
+            public void Dispose()
+            {}
+
+        }
     }
 
 }

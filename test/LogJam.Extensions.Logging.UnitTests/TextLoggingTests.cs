@@ -43,9 +43,9 @@ namespace LogJam.Extensions.Logging
             _logManager = new LogManager(new LogManagerConfig());
             _logManager.Config.UseTextWriter(_logOutput);
             _logManager.Config.UseTestOutput(_testOutput); // Show log output in test output, too.
-            _logManager.Config.Writers.FormatAll<LoggerEntry>(new DefaultLoggerEntryFormatter());
-            _logManager.Config.Writers.FormatAll(new GenericLoggerBeginScopeEntryFormatter());
-            _logManager.Config.Writers.FormatAll(new GenericLoggerEndScopeEntryFormatter());
+            _logManager.Config.FormatAllTextLogWriters<LoggerEntry>(new DefaultLoggerEntryFormatter());
+            _logManager.Config.FormatAllTextLogWriters(new GenericLoggerBeginScopeEntryFormatter());
+            _logManager.Config.FormatAllTextLogWriters(new GenericLoggerEndScopeEntryFormatter());
 
             _loggerFactory = new LoggerFactory();
             _loggerFactory.AddLogJam(_logManager, true, LogJamLogger.LogInformation);
@@ -74,7 +74,7 @@ namespace LogJam.Extensions.Logging
         public void ScopeWithMessageLoggingWorks()
         {
             var logger = _loggerFactory.CreateLogger(GetType());
-            using (var scope = logger.BeginScope("Scope message {0}", 1))
+            using (var scope = logger.BeginScope("Scope message {ActionName}", "Index"))
             {
                 logger.LogInformation("Info inside scope");
             }

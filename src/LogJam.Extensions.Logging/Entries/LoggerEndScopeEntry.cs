@@ -15,20 +15,20 @@ namespace LogJam.Extensions.Logging.Entries
     /// <summary>
     /// A log entry type that is written when a scope ends.
     /// </summary>
-    public readonly struct LoggerEndScopeEntry<TState> : ILogEntry
+    public readonly struct LoggerEndScopeEntry : ILogEntry
     {
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
         public readonly string CategoryName;
         public readonly DateTime TimestampUtc;
-        public readonly TState State;
+        public readonly string StateString;
 
-        public LoggerEndScopeEntry(string categoryName, TState state)
+        public LoggerEndScopeEntry(string categoryName, string stateString)
         {
             TimestampUtc = DateTime.UtcNow;
             CategoryName = categoryName ?? throw new ArgumentNullException(nameof(categoryName));
-            State = state;
+            StateString = stateString;
         }
 
     }

@@ -1,19 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerScope.cs">
-// Copyright (c) 2011-2017 https://github.com/logjam2.  
+// Copyright (c) 2011-2018 https://github.com/logjam2.  
 // </copyright>
 // Licensed under the <a href="https://github.com/logjam2/logjam/blob/master/LICENSE.txt">Apache License, Version 2.0</a>;
 // you may not use this file except in compliance with the License.
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+
+using LogJam.Extensions.Logging.Entries;
+using LogJam.Writer;
+
 namespace LogJam.Extensions.Logging
 {
-    using System;
-
-    using LogJam.Extensions.Logging.Entries;
-    using LogJam.Writer;
-
 
     /// <summary>
     /// A logger scope - for example, an HTTP request. A scope has a begin and an end, and
@@ -21,6 +21,7 @@ namespace LogJam.Extensions.Logging
     /// </summary>
     internal sealed class LoggerScope<TState> : IDisposable
     {
+
         // TODO: Hold scope parent
 
         private readonly string _loggerName;
@@ -60,23 +61,13 @@ namespace LogJam.Extensions.Logging
 
         internal void WriteEndScope()
         {
-            if (_provider.TryGetEntryWriter(out IEntryWriter<LoggerEndScopeEntry<TState>> entryWriter))
+            if (_provider.TryGetEntryWriter(out IEntryWriter<LoggerEndScopeEntry> entryWriter))
             {
                 if (entryWriter.IsEnabled)
                 {
-                    var entry = new LoggerEndScopeEntry<TState>(_loggerName, _state);
+                    var entry = new LoggerEndScopeEntry(_loggerName, _state.ToString());
                     _endTimestamp = entry.TimestampUtc;
                     entryWriter.Write(ref entry);
-                }
-            }
-            // Use the fallback entryWriter if none is defined for TState
-            else if (_provider.TryGetEntryWriter(out IEntryWriter<LoggerEndScopeEntry<object>> entryWriter2))
-            {
-                if (entryWriter2.IsEnabled)
-                {
-                    var entry = new LoggerEndScopeEntry<object>(_loggerName, _state);
-                    _endTimestamp = entry.TimestampUtc;
-                    entryWriter2.Write(ref entry);
                 }
             }
         }
