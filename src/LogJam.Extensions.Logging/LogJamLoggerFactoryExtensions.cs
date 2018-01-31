@@ -10,7 +10,9 @@
 using System;
 
 using LogJam;
+using LogJam.Config;
 using LogJam.Extensions.Logging;
+using LogJam.Extensions.Logging.Format;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
@@ -38,6 +40,18 @@ namespace Microsoft.Extensions.Logging
 
             factory.AddProvider(new LogJamLoggerProvider(logManager, disposeLogManager, filter ?? LogJamLogger.LogInformation));
             return factory;
+        }
+
+        
+        /// <summary>
+        /// Enables the default text formatters for entry types that are logged when <see cref="ILogger"/> instances are used for logging.
+        /// </summary>
+        /// <param name="logManagerConfig"></param>
+        public static void AddDefaultLoggerTextFormatters(this LogManagerConfig logManagerConfig)
+        {
+            logManagerConfig.FormatAllTextLogWriters(new DefaultLoggerEntryFormatter());
+            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerBeginScopeEntryFormatter());
+            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerEndScopeEntryFormatter());
         }
 
     }

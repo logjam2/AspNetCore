@@ -185,20 +185,9 @@ namespace Microsoft.Extensions.DependencyInjection
 #endif
 
             // Setup default text formatters
-            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => AddDefaultLoggerTextFormatters(logManagerConfig));
+            serviceCollection.AddLogJam((logManagerConfig, serviceProvider) => logManagerConfig.AddDefaultLoggerTextFormatters());
 
             return serviceCollection;
-        }
-
-        /// <summary>
-        /// Enables the default text formatters for entry types that are logged when <see cref="ILogger"/> instances are used for logging.
-        /// </summary>
-        /// <param name="logManagerConfig"></param>
-        internal static void AddDefaultLoggerTextFormatters(LogManagerConfig logManagerConfig)
-        {
-            logManagerConfig.FormatAllTextLogWriters(new DefaultLoggerEntryFormatter());
-            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerBeginScopeEntryFormatter());
-            logManagerConfig.FormatAllTextLogWriters(new GenericLoggerEndScopeEntryFormatter());
         }
 
     }

@@ -43,9 +43,7 @@ namespace LogJam.Extensions.Logging
             _logManager = new LogManager(new LogManagerConfig());
             _logManager.Config.UseTextWriter(_logOutput);
             _logManager.Config.UseTestOutput(_testOutput); // Show log output in test output, too.
-            _logManager.Config.FormatAllTextLogWriters<LoggerEntry>(new DefaultLoggerEntryFormatter());
-            _logManager.Config.FormatAllTextLogWriters(new GenericLoggerBeginScopeEntryFormatter());
-            _logManager.Config.FormatAllTextLogWriters(new GenericLoggerEndScopeEntryFormatter());
+            _logManager.Config.AddDefaultLoggerTextFormatters();
 
             _loggerFactory = new LoggerFactory();
             _loggerFactory.AddLogJam(_logManager, true, LogJamLogger.LogInformation);
