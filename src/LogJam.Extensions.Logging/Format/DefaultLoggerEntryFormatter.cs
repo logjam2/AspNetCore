@@ -34,6 +34,7 @@ namespace LogJam.Extensions.Logging.Format
         {
             MaxIndentLevel = DefaultMaxIndentLevel;
             IncludeTimestamp = true;
+            IncludeEventId = true;
         }
 
         #region Public Properties
@@ -95,7 +96,7 @@ namespace LogJam.Extensions.Logging.Format
 
             if (IncludeEventId)
             {
-                formatWriter.WriteField(entry.EventId.ToString(), color, 6);
+                formatWriter.WriteField(entry.EventId.ToString(), color, 4);
             }
 
             string message = entry.DefaultFormatter(entry.State, null);

@@ -47,6 +47,8 @@ namespace LogJam.Extensions.Logging.Format
         /// <inheritdoc />
         public override void Format(ref LoggerEndScopeEntry entry, FormatWriter formatWriter)
         {
+            formatWriter.IndentLevel--;
+
             formatWriter.BeginEntry();
 
             if (IncludeDate)

@@ -78,6 +78,8 @@ namespace LogJam.Extensions.Logging.Format
             _reflectionFormatter.FormatObject(entry.State, formatWriter);
 
             formatWriter.EndEntry();
+
+            formatWriter.IndentLevel++;
         }
 
     }
